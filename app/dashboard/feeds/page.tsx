@@ -1,5 +1,5 @@
 import { connectDB } from '@/libs/mongodb';
-import { Feed, IFeed } from '@/models/Feed';
+import { Feed} from '@/models/Feed';
 import {ChatBubbleLeftIcon} from '@heroicons/react/24/outline'
 import { Button } from '@/app/ui/button';
 import LikeButton from '@/app/ui/LikeButton';
@@ -9,8 +9,8 @@ import AdBanner from '@/app/ui/ads/AdBanner';
 const FeedsPage = async () => {
 
   const db = await connectDB();
-  const feedsCollection = db.collection<IFeed>('feeds');
-
+  const feedsCollection = db.collection('feeds');
+  console.log(typeof feedsCollection)
   const feeds = await feedsCollection.find({}).toArray();
   return (
     <div className="max-w-5xl p-4 h-full flex-col">
