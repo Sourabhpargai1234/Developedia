@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import Likes from "@/models/Likes";
+import { Like } from "@/models/Likes";
 import { NextResponse } from "next/server";
 import { authOptions } from "@/libs/auth";
 
@@ -22,9 +22,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    const existingLike = await Likes.findOne({ liked, likedBy });
+    const existingLike = await Like.findOne({ liked, likedBy });
     if (existingLike) {
-      await Likes.deleteOne({ _id: existingLike._id });
+      await Like.deleteOne({ _id: existingLike._id });
       return NextResponse.json(
         { message: "Like deleted successfully" },
         { status: 200 }
@@ -32,11 +32,11 @@ export async function POST(request: Request) {
     } 
 
     else{
-      const Like = new Likes({
+      const Likes = new Like({
         liked,
         likedBy,
       });
-      const savedLike = await Like.save();
+      const savedLike = await Likes.save();
       return NextResponse.json(
         {
           liked: savedLike.liked,
