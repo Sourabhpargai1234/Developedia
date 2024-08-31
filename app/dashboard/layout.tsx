@@ -1,10 +1,7 @@
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
 import SideNav from "../ui/Sidenav";
-export const experimental_ppr = true;
 import AdSense from "../ui/ads/AdSense";
-import AdBanner from "../ui/ads/AdBanner";
 
 const inter = Inter({ subsets: ["latin"] });
 
