@@ -4,6 +4,8 @@ import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
+import { Session } from "next-auth";
+import { JWT } from "next-auth/jwt";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -83,16 +85,16 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
       return {
         ...session,
         user: {
           ...session.user,
-          id: token.id,
-          username: token.username,
-          email: token.email,
-          image: token.image,
-          bio: token.bio
+          id: token.id as string, // Assert as string
+          username: token.username as string, // Assert as string
+          email: token.email as string | null | undefined, // Match Session type
+          image: token.image as string | null | undefined, // Match Session type
+          bio: token.bio as string | null | undefined, // Match Session type
         },
       };
     },
