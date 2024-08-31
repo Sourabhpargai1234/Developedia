@@ -1,5 +1,5 @@
 import { connectDB } from '@/libs/mongodb';
-import { Feed} from '@/app/types';
+import { Feed, IFeed } from '@/models/Feed';
 import {ChatBubbleLeftIcon} from '@heroicons/react/24/outline'
 import { Button } from '@/app/ui/button';
 import LikeButton from '@/app/ui/LikeButton';
