@@ -10,12 +10,17 @@ import { BiSolidShow } from 'react-icons/bi';
 import { BiSolidHide } from 'react-icons/bi';
 
 const Signup = () => {
-  const [error, setError] = useState();
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [bio, setBio] = useState<string>('');
+  const [pic, setPic] = useState<File | null>(null); // For handling the profile picture
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { data: session } = useSession();
-
-  const labelStyles = "w-full text-sm";
+  console.log("Session=",session)
+  const labelStyles = "w-full text-sm text-black";
 
   useEffect(() => {
     if (session) {
@@ -23,20 +28,35 @@ const Signup = () => {
     }
   }, [session, router]);
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setPic(event.target.files[0]);
+    }
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     try {
-      const formData = new FormData(event.currentTarget);
-      const signupResponse = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/signup`, {
-        email: formData.get("email"),
-        password: formData.get("password"),
-        name: formData.get("name"),
-        phone: formData.get("phone"),
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("bio", bio);
+      if (pic) {
+        formData.append("pic", pic);
+      }
+
+      const signupResponse = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/signup`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          'Authorization': `Bearer ${session}`,
+        },
       });
 
       const res = await signIn("credentials", {
         email: signupResponse.data.email,
-        password: formData.get("password"),
+        password: password,
         redirect: false,
       });
 
@@ -51,28 +71,32 @@ const Signup = () => {
   };
 
   return (
-    <section className="w-full h-screen flex items-center justify-center">
+    <section className="w-full h-screen flex items-center justify-center bg-gradient-to-r from-pink-100 via-pink-50 to-blue-100">
       <form
         onSubmit={handleSubmit}
         className="p-6 xs:p-10	w-full max-w-[350px] flex flex-col justify-between items-center gap-2.5	
-        border border-solid border-[#242424] bg-[#0a0a0a] rounded"
+        border border-solid border-[#242424] bg-[#0a0a0a] rounded-lg bg-gradient-to-l from-pink-100 via-pink-50 to-blue-100"
       >
         {error && <div className="">{error}</div>}
-        <h1 className="mb-5 w-full text-2xl	font-bold">Signup</h1>
+        <h1 className="mb-5 w-full text-2xl	font-bold text-black">Signup</h1>
 
-        <label className={labelStyles}>Fullname:</label>
+        <label className={labelStyles}>Username:</label>
         <input
           type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           placeholder="Fullname"
-          className="w-full h-8 border border-solid border-[#242424] py-1 px-2.5 rounded bg-black text-[13px]"
+          className="w-full h-8 border border-solid border-[#242424] py-1 px-2.5 rounded bg-white text-[13px] text-black"
           name="name"
         />
 
         <label className={labelStyles}>Email:</label>
         <input
           type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
-          className="w-full h-8 border border-solid border-[#242424] py-1 px-2.5 rounded bg-black text-[13px]"
+          className="w-full h-8 border border-solid border-[#242424] py-1 px-2.5 rounded bg-white text-[13px]"
           name="email"
         />
 
@@ -80,49 +104,63 @@ const Signup = () => {
         <div className="flex w-full">
           <input
             type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-            className="w-full h-8 border border-solid border-[#242424] py-1 px-2.5 rounded-l bg-black text-[13px]"
+            className="w-full h-8 border border-solid border-[#242424] py-1 px-2.5 rounded-l bg-white text-[13px] text-black"
             name="password"
           />
           <button
-            className="w-2/12	border-y border-r border-solid border-[#242424] bg-black rounded-r 
+            className="w-2/12	border-y border-r border-solid border-[#242424] bg-white rounded-r 
             flex items-center justify-center transition duration-150 ease hover:bg-[#1A1A1A]"
             onClick={(e) => {
               e.preventDefault();
-              setShowPassword(!showPassword)
+              setShowPassword(!showPassword);
             }}
           >
             {showPassword ? <BiSolidHide /> : <BiSolidShow />}
           </button>
         </div>
 
-        <label className={labelStyles}>Phone:</label>
+        <label className={labelStyles}>Bio:</label>
         <input
           type="text"
-          placeholder="Phone (not required)"
-          className="w-full h-8 border border-solid border-[#242424] py-1 px-2.5 rounded bg-black text-[13px]"
-          name="phone"
+          value={bio}
+          onChange={(e) => setBio(e.target.value)}
+          placeholder="Not compulsory"
+          className="w-full h-8 border border-solid border-[#242424] py-1 px-2.5 rounded bg-white text-[13px]"
+          name="bio"
+        />
+ 
+        <label className={labelStyles}>Profile Pic:</label>
+        <input
+          type="file"
+          accept="image/jpeg,image/png,image/gif"
+          onChange={handleFileChange}
+          placeholder="Not compulsory"
+          className="w-full h-8 border border-solid border-[#242424] py-1 px-2.5 rounded bg-white text-[13px]"
+          name="pic"
         />
 
         <button className="w-full bg-black border border-solid border-[#242424] py-1.5 mt-2.5 rounded
-        transition duration-150 ease hover:bg-[#1A1A1A] text-[13px]">
+        transition duration-150 ease hover:bg-[#1A1A1A] text-[13px] text-white">
           Signup
         </button>
 
         <div className="w-full h-10	relative flex items-center justify-center">
           <div className="absolute h-px w-full top-2/4 bg-[#242424]"></div>
-          <p className="w-8	h-6 bg-[#0a0a0a] z-10 flex items-center justify-center">or</p>
+          <p className="w-8	h-6 bg-[#0a0a0a] z-10 flex items-center justify-center text-white">or</p>
         </div>
 
         <button
           className="flex py-2 px-4 text-sm	align-middle items-center rounded text-999 bg-black 
-          border border-solid border-[#242424] transition duration-150 ease hover:bg-[#1A1A1A] gap-3"
+          border border-solid border-[#242424] transition duration-150 ease hover:bg-[#1A1A1A] gap-3 text-white"
           onClick={() => signIn("google")}>
           <BiLogoGoogle className="text-2xl" /> Sign in with Google
         </button>
-        <Link href="/login" className="text-sm	text-[#888] transition duration-150 ease hover:text-white">
+        <Link href="/ui/login" className="text-sm	text-[#888] transition duration-150 ease text-black hover:text-blue-800">
           Already have an account?
-          </Link>
+        </Link>
       </form>
     </section>
   );

@@ -1,5 +1,5 @@
 "use client"
-import { useEffect } from "react";
+import { useEffect ,useState} from "react";
 import Image from "next/image";
 import Navbar from "./ui/Navbar";
 import { useGSAP } from "@gsap/react";
@@ -8,11 +8,21 @@ import gsap from "gsap";
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import HangingElements from "./ui/gsap/HangingElements";
 import HangingElements2 from "./ui/gsap/HangingElements2";
-
+import Loading from "./loading";
+import TextAnimation from "./ui/gsap/TextAnimation";
 
 
 export default function Home() {
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+  if (loading) {
+    return <TextAnimation />;
+  }
   return (
     <main className="flex min-h-screen flex-col items-center p-24 bg-gradient-to-r from-pink-100 via-pink-50 to-blue-100">
       <h1 className="text-slate-400 font-bold bg-clip-text text-6xl mb-4">

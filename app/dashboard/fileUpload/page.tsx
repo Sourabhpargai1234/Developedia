@@ -24,12 +24,13 @@ export default function FileUpload() {
         setIsUploading(true);
 
         const formData = new FormData();
-        formData.append("email", email);
-        formData.append("title", title);
-        formData.append("description", desc);
+        formData.append("user", session?.user?.id);
+        formData.append("content", title);
+        formData.append("desc", desc);
         if (file) formData.append("file", file);
         if (videofile) formData.append("videofile", videofile);
 
+        formData.append("email", email);
         try {
             const response = await axios.post("/api/auth/Feeds", formData, {
                 headers: {

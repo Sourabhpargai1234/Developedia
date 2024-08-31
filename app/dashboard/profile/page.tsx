@@ -7,19 +7,21 @@ import { useRef } from "react";
 import { applyHoverScale, revertScale } from "@/app/ui/gsap/SizeAnimations";
 import { fetchFeed } from "@/app/actions/fetchFeed";
 import DashboardSkeleton from "@/app/ui/skeletons";
+import AdBanner from "@/app/ui/ads/AdBanner";
 
 export default function Home() {
   const linkRef1 = useRef<HTMLAnchorElement | null>(null);
 
   const { status, data: session } = useSession();
+  console.log("Session=",session)
   const [feeds, setFeed] = useState<any[]>([]); 
   const [error, setError] = useState<string | null>(null);
-
+  console.log("id: ",session?.user?.id)
   useEffect(() => {
     const getFeeds = async () => {
-      if (session?.user?.email) {
+      if (session?.user?.id) {
         try {
-          const fetchedFeeds = await fetchFeed(session.user.email);
+          const fetchedFeeds = await fetchFeed(session?.user?.id);
           setFeed(fetchedFeeds);
         } catch (error) {
           setError("Failed to fetch feeds");
@@ -28,7 +30,7 @@ export default function Home() {
     };
     getFeeds();
   }, [session]);
-
+  console.log("Feeds: ",feeds)
   const showSession = () => {
     if (status === "authenticated") {
       const imageUrl = session?.user?.image || '/noimage.png';
@@ -37,15 +39,15 @@ export default function Home() {
           <div className="float-left">
             <h1 className="text-3xl">Welcome {session?.user?.name}</h1>
             <h1>{session?.user?.email}</h1>
+            <h1>{session?.user?.bio || "No bio available"}</h1>
           </div>
-          <Image
-            className="rounded-full float-right"
-            src={imageUrl}
-            alt="User Image"
-            width={100}  // specify the width
-            height={100} // specify the height
-            layout="intrinsic" // optional: layout mode
-          />
+          <img
+                src={imageUrl}
+                alt='Profile pic'
+                height={100}
+                width={100}
+                className="float-right rounded-full"
+              />
         </div>
       );
     } else if (status === "loading") {
@@ -72,29 +74,31 @@ export default function Home() {
 
   console.log("Feeds", feeds);
   return (
-    <main className="flex flex-col h-full relative">
+    <main className="flex flex-col h-full w-full relative">
       {showSession()}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <div className="max-w-5xl p-4">
-      <h1 className="text-2xl font-semibold text-center mb-6">{session && 'Your Uploads'}</h1>
+      <h1 className="text-2xl font-semibold text-center mb-6">{session?(feeds.length==0?"You haven't uploaded anything yet":"Your uploads"):""}</h1>
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {feeds.map((feed:any) => (
           <li key={feed._id} className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="aspect-w-4 aspect-h-4">
               <img
-                src={feed.image}
-                alt={feed.title}
+                src={feed.file}
+                alt={feed.content}
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="p-4">
-              <h2 className="text-lg font-medium">{feed.title}</h2>
+              <h2 className="text-lg font-medium">{feed.content}</h2>
               <p className="text-gray-600">{feed.desc}</p>
-              <p className="text-gray-500 text-sm mt-2">Email: {feed.email}</p>
             </div>
           </li>
         ))}
       </ul>
+      <div className="absolute lg:top-1/4 lg:w-1/4 lg:right-0">
+        <AdBanner dataAdFormat='auto' dataFullWidthResponsive={true} dataAdSlot='1573170883'/>
+      </div>
     </div>
     </main>
   );

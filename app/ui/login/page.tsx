@@ -15,8 +15,7 @@ const Signin = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const labelStyles = "w-full text-sm text-white";
-
+  const labelStyles = "w-full text-sm text-black";
   useEffect(() => {
     if (session?.user) {
       router.push("/dashboard/profile");
@@ -39,24 +38,23 @@ const Signin = () => {
     if (!res?.error) {
       return router.push("/")
     };
-    
   };
 
   return (
-    <section className="w-full h-screen flex items-center justify-center">
+    <section className="w-full h-screen flex items-center justify-center bg-gradient-to-r from-pink-100 via-pink-50 to-blue-100">
       <form
         className="p-6 xs:p-10	w-full max-w-[350px] flex flex-col justify-between items-center gap-2.5	
-        border border-solid border-[#242424] bg-[#0a0a0a] rounded"
+        border border-solid border-[#242424] bg-[#0a0a0a] rounded bg-gradient-to-l from-pink-100 via-pink-50 to-blue-100 rounded-lg"
         onSubmit={handleSubmit}
       >
         {error && <div className="">{error}</div>}
-        <h1 className="mb-5 w-full text-white text-2xl	font-bold">Signin</h1>
+        <h1 className="mb-5 w-full text-black text-2xl font-bold">Signin</h1>
 
         <label className={labelStyles}>Email:</label>
         <input
           type="email"
           placeholder="Email"
-          className="w-full h-8 border border-solid border-[#242424] py-1 px-2.5 rounded bg-black text-[13px] text-white"
+          className="w-full h-8 border border-solid border-[#242424] py-1 px-2.5 rounded bg-white text-[13px] text-black"
           name="email"
         />
 
@@ -65,12 +63,12 @@ const Signin = () => {
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Password"
-            className="w-full h-8 border border-solid border-[#242424] py-1 px-2.5 rounded-l bg-black text-[13px] text-white"
+            className="w-full h-8 border border-solid border-[#242424] py-1 px-2.5 rounded-l bg-white text-[13px] text-black"
             name="password"
           />
           <button
             className="w-2/12	border-y border-r border-solid border-[#242424] bg-black rounded-r 
-          flex items-center justify-center transition duration-150 ease hover:bg-[#1A1A1A]"
+          flex items-center justify-center transition duration-150 ease   bg-white"
             onClick={(e) => {
               e.preventDefault();
               setShowPassword(!showPassword)
@@ -99,7 +97,7 @@ const Signin = () => {
           }}>
           <BiLogoGoogle className="text-2xl text-white" /> Sign in with Google
         </button>
-        <Link href="/ui/register" className="text-sm	text-[#888] transition duration-150 ease hover:text-white text-white">
+        <Link href="/ui/register" className="text-sm hover:text-blue-800 text-[#888] transition duration-150 ease text-black">
           Don&apos;t have an account?
         </Link>
       </form>

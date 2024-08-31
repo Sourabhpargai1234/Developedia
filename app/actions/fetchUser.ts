@@ -1,14 +1,13 @@
 "use server";
 
 import { connectDB } from "@/libs/mongodb";
-import { Feed,IFeed } from "@/models/Feed";
+import User from "@/models/User";
 
-export async function fetchFeed(id: string) {
+export async function fetchUser(email: string) {
   try {
     const db = await connectDB();
-    const feeds = await Feed.find({user : id });
-    console.log(feeds)
-    return feeds;
+    const user = await User.find({ email });
+    return user;
   } catch (error) {
     console.error("Error fetching feed:", error);
     throw new Error("Failed to fetch feed");

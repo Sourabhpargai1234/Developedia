@@ -1,13 +1,12 @@
-import Feed from "@/models/Feed";
+import { Feed, IFeed } from "@/models/Feed";
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from "@/libs/auth";
 import { connectDB } from "@/libs/mongodb";
-import User from "@/models/User";
-import { v2 as cloudinary } from 'cloudinary';
-import { Readable } from "stream";
 import { revalidatePath } from "next/cache";
+import { uploadToCloudinary } from "../Cloudinary";
+import { v2 as cloudinary } from 'cloudinary';
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -23,13 +22,13 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
 
-    const email = formData.get("email") as string;
-    console.log("Email:", email)
-    const title = formData.get("title") as string;
-    const description = formData.get("description") as string;
+    const user = formData.get("user") as string;
+    const content = formData.get("content") as string;
+    const desc = formData.get("desc") as string;
     const file = formData.get("file") as Blob | null;
     const videofile = formData.get("videofile") as Blob | null;
 
+    const email = formData.get("email") as string;
     const SessionEmail = session?.user?.email || null;
     const InputEmail = email || null;
 
@@ -54,26 +53,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Cloudinary credentials not found" }, { status: 500 });
     }
 
-    const uploadToCloudinary = (buffer: Buffer, resourceType: "image" | "video") => {
-      return new Promise<string>((resolve, reject) => {
-        const uploadStream = cloudinary.uploader.upload_stream(
-          { resource_type: resourceType },
-          (error, result) => {
-            if (error) {
-              reject(new Error(`${resourceType} upload failed: ${error.message}`));
-            } else {
-              resolve(result?.secure_url || "");
-            }
-          }
-        );
-
-        // Create a readable stream from the buffer and pipe it to the Cloudinary upload stream
-        const readableStream = new Readable();
-        readableStream.push(buffer);
-        readableStream.push(null); // End of the stream
-        readableStream.pipe(uploadStream);
-      });
-    };
 
     let uploadedImageUrl = "";
     let uploadedVideoUrl = "";
@@ -93,14 +72,14 @@ export async function POST(request: Request) {
       uploadedVideoUrl = await uploadToCloudinary(buffer, "video");
     }
 
-    console.log("description",description);
+    console.log("description",desc);
 
     const feed = new Feed({
-      email,
-      title,
-      desc: description,
-      image: uploadedImageUrl,
-      video: uploadedVideoUrl || " ",
+      user,
+      content,
+      desc,
+      file: uploadedImageUrl,
+      videofile: uploadedVideoUrl || " ",
     });
 
     const savedFeed = await feed.save();
@@ -109,12 +88,11 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       {
-        name: savedFeed.name,
-        email: savedFeed.email,
-        title: savedFeed.title,
+        id: savedFeed.user,
+        content: savedFeed.content,
         desc: savedFeed.desc,
-        image: savedFeed.image,
-        video: savedFeed.video,
+        file: savedFeed.file,
+        videofile: savedFeed.videofile,
       },
       { status: 201 }
     );

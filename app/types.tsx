@@ -1,8 +1,12 @@
-export interface Feed{
-    _id: string,
-    name: string,
-    image: string,
-    title: string,
-    desc: string,
-    email: string
-  }
+import { ObjectId } from "mongodb"
+
+export interface Feed {
+  _id: ObjectId;
+  email: string;
+  image: string;
+  video?: string;
+  title: string;
+  desc: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

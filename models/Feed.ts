@@ -1,49 +1,30 @@
-import { Schema, model, models } from "mongoose";
+//Feeds Schema and it's type
 
-export interface UserFeeds {
-  email: string;
-  image: string;
-  video: string,
-  title: string,
-  desc: string,
-  _id: string;
+import mongoose, { Document, Model, Schema } from 'mongoose';
+
+// Interface for the Feed document
+export interface IFeed extends Document {
+  user: mongoose.Types.ObjectId;
+  content: string;
+  desc: string;
+  file: string;
+  videofile: string[];
   createdAt: Date;
   updatedAt: Date;
 }
 
-const FeedsSchema = new Schema<UserFeeds>({
-    email: {
-      type: String,
-      required: [true, "Email is required"],
-      match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        "Email is invalid",
-      ],
-    },
-    image:{
-        type: String,
-        required: [true, "At least a single image is required"]
-    },
-    video: {
-      type: String,
-    },
-    title: {
-      type: String,
-      required: [true, "Title is a must"],
-      minlength: [1, "Must be atleast 10 characters"],
-      maxlength: [30, "Must not exceed 30 characters"]
-    },
-    desc: {
-        type: String,
-        required: [true, "Description is compulsory"],
-        minlength: [5, "Must be atleast 50 characters"],
-        maxlength: [200, "Explaination must not exceed 200 characters"]
-    }
-  },
-  {
-    timestamps: true,
-  }
-);
+// Feed Schema
+const FeedSchema: Schema<IFeed> = new Schema({
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  content: { type: String, required: true },
+  desc: { type: String, required: true },
+  file: [{ type: String }],
+  videofile: [{ type: String }],
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+}, {
+  timestamps: true
+});
 
-const Feed = models.Feed || model<UserFeeds>('Feed', FeedsSchema);
-export default Feed;
+// Create and export the Feed model
+export const Feed = mongoose.models.Feed || mongoose.model<IFeed>('Feed', FeedSchema);

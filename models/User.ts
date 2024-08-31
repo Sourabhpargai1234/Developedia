@@ -1,46 +1,33 @@
-import { Schema, model, models } from "mongoose";
+//User Schema and it's type
 
-export interface UserDocument {
+import mongoose, { Document, Schema } from "mongoose";
+
+export interface IUser extends Document {
+  username: string;
   email: string;
   password: string;
-  name: string;
-  phone: string;
-  image: string;
-  _id: string;
+  profilePicture?: string;
+  bio?: string;
+  likedPosts: mongoose.Types.ObjectId[];
+  subscribers: mongoose.Types.ObjectId[];
+  subscribedTo: mongoose.Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 }
 
-const UserSchema = new Schema<UserDocument>({
-    email: {
-      type: String,
-      unique: true,
-      required: [true, "Email is required"],
-      match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        "Email is invalid",
-      ],
-    },
-    password: {
-      type: String,
-      required: [true, "Password is required"],
-      select: false,
-    },
-    name: {
-      type: String,
-      required: [true, "Fullname is required"],
-      minLength: [3, "fullname must be at least 3 characters"],
-      maxLength: [25, "fullname must be at most 25 characters"],
-    },
-    phone: {
-      type: String,
-      default: ""
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
 
-const User = models.User || model<UserDocument>('User', UserSchema);
-export default User;
+// Interface for the User model
+const UserSchema = new Schema<IUser>({
+  username: { type: String, required: true },
+  email: { type: String, required: true },
+  password: { type: String, required: true, select: false },
+  profilePicture: String,
+  bio: String,
+  likedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
+  subscribers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  subscribedTo: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+}, {
+  timestamps: true,
+});
+
+export const User = mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
