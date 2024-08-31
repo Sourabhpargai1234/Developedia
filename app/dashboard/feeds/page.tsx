@@ -9,7 +9,7 @@ import AdBanner from '@/app/ui/ads/AdBanner';
 const FeedsPage = async () => {
 
   const db = await connectDB();
-  const feedsCollection = db.collection<Feed>('feeds');
+  const feedsCollection = db.collection<IFeed>('feeds');
 
   const feeds = await feedsCollection.find({}).toArray();
   return (
@@ -21,14 +21,14 @@ const FeedsPage = async () => {
             <div className="aspect-w-4 aspect-h-3/5 ">
               <img
                 src={feed.file}
-                alt={feed.title}
+                alt={feed.content}
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="p-4">
-              <h2 className="text-lg font-medium">{feed.title}</h2>
+              <h2 className="text-lg font-medium">{feed.content}</h2>
               <p className="text-gray-600">{feed.desc}</p>
-              <p className="text-gray-500 text-sm mt-2">Email: {feed.email}</p>
+              <p className="text-gray-500 text-sm mt-2">Email: {feed.content}</p>
             </div>
             <div className="flex h-8 gap-8 mx-4 justify-between">
                 <LikeButton id={feed._id.toString()} />
