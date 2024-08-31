@@ -24,7 +24,10 @@ export default function FileUpload() {
         setIsUploading(true);
 
         const formData = new FormData();
-        formData.append("user", session?.user?.id);
+        if (session?.user?.id) {
+            formData.append("user", session.user.id);
+          }
+        formData.append("user", session?.user?.id || "");
         formData.append("content", title);
         formData.append("desc", desc);
         if (file) formData.append("file", file);

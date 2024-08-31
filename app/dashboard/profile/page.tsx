@@ -36,7 +36,7 @@ export default function Home() {
       return (
         <div className="w-full">
           <div className="float-left">
-            <h1 className="text-3xl">Welcome {session?.user?.name}</h1>
+            <h1 className="text-3xl">Welcome {session?.user?.username}</h1>
             <h1>{session?.user?.email}</h1>
             <h1>{session?.user?.bio || "No bio available"}</h1>
           </div>
