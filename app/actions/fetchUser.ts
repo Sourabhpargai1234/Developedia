@@ -1,7 +1,7 @@
 "use server";
 
 import { connectDB } from "@/libs/mongodb";
-import User from "@/models/User";
+import { User } from "@/models/User";
 
 export async function fetchUser(email: string) {
   try {
