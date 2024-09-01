@@ -35,8 +35,6 @@ export async function POST(request: Request) {
     const emailFromSessionString = SessionEmail ? String(SessionEmail).trim().toLowerCase() : '';
     const emailFromInputString = InputEmail ? String(InputEmail).trim().toLowerCase() : '';
 
-    console.log(emailFromSessionString);
-    console.log(emailFromInputString);
 
     if (emailFromSessionString !== emailFromInputString) {
       return NextResponse.json(
@@ -62,7 +60,6 @@ export async function POST(request: Request) {
       const arrayBuffer = await file.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
       uploadedImageUrl = await uploadToCloudinary(buffer, "image");
-      console.log("ImageURL",uploadedImageUrl);
     }
 
     // Handle video file upload
@@ -72,7 +69,6 @@ export async function POST(request: Request) {
       uploadedVideoUrl = await uploadToCloudinary(buffer, "video");
     }
 
-    console.log("description",desc);
 
     const feed = new Feed({
       user,
@@ -84,7 +80,7 @@ export async function POST(request: Request) {
 
     const savedFeed = await feed.save();
 
-    revalidatePath('/')
+    revalidatePath('/dashboard/feeds')
 
     return NextResponse.json(
       {

@@ -1,17 +1,17 @@
 import { connectDB } from '@/libs/mongodb';
-import { Feed} from '@/models/Feed';
 import {ChatBubbleLeftIcon} from '@heroicons/react/24/outline'
-import { Button } from '@/app/ui/button';
+import FollowButton from '@/app/ui/FollowButton'; 
 import LikeButton from '@/app/ui/LikeButton';
 import LikedByButton from '@/app/ui/LikedByButton';
 import AdBanner from '@/app/ui/ads/AdBanner';
+import Link from 'next/link';
+import { Feed } from '@/models/Feed';
 
 const FeedsPage = async () => {
-
+  const feeds = await Feed.find().populate('user', 'username profilePicture bio email');
+  console.log(feeds)
   const db = await connectDB();
-  const feedsCollection = db.collection('feeds');
-  console.log(typeof feedsCollection)
-  const feeds = await feedsCollection.find({}).toArray();
+
   return (
     <div className="max-w-5xl p-4 h-full flex-col">
       <h1 className="text-2xl font-semibold text-center mb-6">Feeds</h1>
@@ -27,13 +27,15 @@ const FeedsPage = async () => {
             </div>
             <div className="p-4">
               <h2 className="text-lg font-medium">{feed.content}</h2>
-              <p className="text-gray-600">{feed.desc}</p>
-              <p className="text-gray-500 text-sm mt-2">Email: {feed.content}</p>
+              <h2 className="text-gray-600">{feed.desc}</h2>
+              <Link href={`/dashboard/feeds/${feed._id.toString()}`}>
+                  <p className="text-gray-600 cursor-pointer">Author: {feed?.user?.username}</p>
+              </Link>
             </div>
             <div className="flex h-8 gap-8 mx-4 justify-between">
                 <LikeButton id={feed._id.toString()} />
                 <ChatBubbleLeftIcon className="cursor-pointer hover:opacity-80"/>
-                <Button>Follow</Button>
+                <FollowButton id={feed._id.toString()} />
             </div>
             <div className='flex my-4 mx-4'>
               <LikedByButton id={feed._id.toString()}/>

@@ -22,7 +22,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const existingLike = await Like.findOne({ liked, likedBy });
+    const existingLike = await Like.findOne({ feed: liked, user: likedBy });
     if (existingLike) {
       await Like.deleteOne({ _id: existingLike._id });
       return NextResponse.json(
@@ -33,14 +33,14 @@ export async function POST(request: Request) {
 
     else{
       const Likes = new Like({
-        liked,
-        likedBy,
+        feed: liked,
+        user: likedBy,
       });
       const savedLike = await Likes.save();
       return NextResponse.json(
         {
-          liked: savedLike.liked,
-          likedBy: savedLike.likedBy,
+          feed: savedLike.feed,
+          user: savedLike.user,
         },
         { status: 201 }
       );
