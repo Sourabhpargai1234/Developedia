@@ -8,9 +8,12 @@ import Link from 'next/link';
 import { Feed } from '@/models/Feed';
 
 const FeedsPage = async () => {
-  const feeds = await Feed.find().populate('user', 'username profilePicture bio email');
-  console.log(feeds)
   const db = await connectDB();
+  const feeds = await Feed.find()
+  .populate('user', 'username')
+  .sort({ createdAt: -1 }); // Sort by creation date, newest first
+
+  console.log(feeds)
 
   return (
     <div className="max-w-5xl p-4 h-full flex-col">
