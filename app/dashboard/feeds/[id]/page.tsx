@@ -24,7 +24,6 @@ interface Feed {
 }
 
 async function getUserProfile(user: string) {
-  const db = await connectDB();
   console.log(user)
   const userProfile = await FeedModel.find({ user: user })
     .populate('user', 'username profilePicture bio email')
@@ -46,6 +45,8 @@ interface FeedPageProps {
 
 export default async function FeedPage({ params }: FeedPageProps) {
   try {
+    const db = await connectDB();
+
     const decodedParam = decodeURIComponent(params.id);
     const objectIdMatch = decodedParam.match(/ObjectId\('([a-fA-F0-9]{24})'\)/);
     if (!objectIdMatch || objectIdMatch.length < 2) {
