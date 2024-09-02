@@ -25,7 +25,7 @@ interface Feed {
 }
 
 async function getUserProfile(user: string) {
-  console.log(user)
+  console.log(User)
   const userProfile = await FeedModel.find({ user: user })
     .populate('user', 'username profilePicture bio email')
     .exec();
