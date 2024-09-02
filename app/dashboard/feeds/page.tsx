@@ -48,7 +48,7 @@ const FeedsPage = async () => {
         ))}
       </ul>
       <div className='mt-8'>
-        <AdBanner dataAdFormat='auto' dataFullWidthResponsive={true} dataAdSlot='5771651795'/>
+        <AdBanner dataAdFormat='auto' dataFullWidthResponsive={true} dataAdSlot='1573170883'/>
       </div>
     </div>
   );
