@@ -5,6 +5,7 @@ import LikeButton from '@/app/ui/LikeButton';
 import { ChatBubbleLeftIcon } from '@heroicons/react/24/outline';
 import LikedByButton from '@/app/ui/LikedByButton';
 import FollowButton from '@/app/ui/FollowButton';
+import { User } from '@/models/User';
 
 interface User {
   _id: string;

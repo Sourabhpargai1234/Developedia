@@ -2,7 +2,7 @@
 
 import { connectDB } from "@/libs/mongodb";
 import { Like } from "@/models/Likes";
-
+import { User } from "@/models/User";
   
 
   export async function fetchLikes(id: string): Promise<Record<string, any> | null> {
