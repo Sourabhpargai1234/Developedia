@@ -8,7 +8,7 @@ import { User } from "@/models/User";
   export async function fetchLikes(id: string): Promise<Record<string, any> | null> {
     try {
       await connectDB();  // Ensure the database connection is established
-  
+      console.log(User);
       // Query to find the document where the 'liked' field matches the given ID
       const feed = await Like.find({feed: id}).populate('user', 'username profilePicture').lean(); // Use .lean() to get a plain JavaScript object
   
