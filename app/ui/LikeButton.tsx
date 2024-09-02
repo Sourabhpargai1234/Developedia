@@ -2,7 +2,6 @@
 
 import { HandThumbUpIcon } from '@heroicons/react/24/outline';
 import { useSession } from 'next-auth/react';
-import { fetchUser } from '../actions/fetchUser';
 import axios from 'axios';
 
 interface LikeButtonProps {
@@ -14,12 +13,10 @@ const LikeButton: React.FC<LikeButtonProps> = ({ id }) => {
 
   const handleLike = async () => {
     try {
-      console.log("Button clicked")
-      const EmailFromSession = session?.user?.email;
-      const DatabaseObject = await fetchUser(EmailFromSession || "String");
+      const likedBy = session?.user?.id;
+      console.log("User=",likedBy)
       const liked = id;
-      console.log(liked);
-      const likedBy = DatabaseObject?.[0]?._id;
+      console.log("liked=",liked);
 
       // Ensure both `liked` and `likedBy` are valid before proceeding
       if (!liked || !likedBy) {
