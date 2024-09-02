@@ -12,13 +12,20 @@ const AdBanner=({
     dataAdFormat,
     dataFullWidthResponsive
 }:AdBannerTypes)=>{
-    useEffect(()=>{
-        try {
-            ((window as any).adsbygoogle=(window as any).adsbygoogle || []).push({})
-        } catch (error: any) {
-            console.log(error.message)
-        }
-    })
+    useEffect(() => {
+        const initializeAds = () => {
+          if (typeof window !== "undefined" && (window as any).adsbygoogle) {
+            try {
+              ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+            } catch (error: any) {
+              console.log(error.message);
+            }
+          }
+        };
+    
+        initializeAds();
+    
+      }, []);
     return(
         <ins
           className="adsbygoogle bg-black"
