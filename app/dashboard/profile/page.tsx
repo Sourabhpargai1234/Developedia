@@ -32,7 +32,6 @@ export default function Home() {
   console.log("Feeds: ",feeds)
   const showSession = () => {
     if (status === "authenticated") {
-      const imageUrl = session?.user?.image || '/noimage.png';
       return (
         <div className="w-full">
           <div className="float-left">
@@ -41,7 +40,7 @@ export default function Home() {
             <h1>{session?.user?.bio || "No bio available"}</h1>
           </div>
           <img
-                src={imageUrl}
+                src={session?.user?.image}
                 alt='Profile pic'
                 height={100}
                 width={100}

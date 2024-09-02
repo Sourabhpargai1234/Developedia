@@ -61,6 +61,36 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
+    async signIn({ user, account, profile }) {
+      try {
+        const db = await connectDB(); // Get the mongoose connection
+        const usersCollection = db.collection('users'); // Access the 'users' collection
+    
+        // Check if the user already exists in the database
+        const existingUser = await usersCollection.findOne({ email: user.email });
+    
+        if (!existingUser) {
+          // Insert the user details into the database if the user does not exist
+          await usersCollection.insertOne({
+            username: user.name,
+            email: user.email,  // Correct email field
+            password: "",       // Password is empty as it's a Google signup
+            profilePicture: user.image,
+            bio: "",            // Default bio, can be updated later
+            likedPost: new Array(),
+            subscribers: new Array(),
+            subscribedTo: new Array(),
+            createdAt: new Date(),
+          });
+        }
+    
+        return true; // Continue the sign-in process
+      } catch (error) {
+        console.error("Error during signIn:", error);
+        return false; // Optionally handle the sign-in error
+      }
+    },
+    
     async jwt({ token, user, session, trigger }) {
       // Keep your existing jwt logic
       if (trigger === "update" && session?.name) {

@@ -12,4 +12,13 @@ declare module "next-auth" {
       // Add other properties here if needed
     };
   }
+  interface signIn {
+    user: {
+      username: string,
+      email: string,
+      password?: string,
+      profilePicture: string,
+      bio?: string
+    };
+  }
 }
