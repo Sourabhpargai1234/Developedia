@@ -7,6 +7,6 @@ export const metadata: Metadata = {
 
 export default function Aboutpage() {
   return (
-    <div>Aboutpage</div>
+    <div className='w-full h-screen'>Aboutpage</div>
   )
 }

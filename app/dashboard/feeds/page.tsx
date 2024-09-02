@@ -16,7 +16,7 @@ const FeedsPage = async () => {
   console.log(feeds)
 
   return (
-    <div className="max-w-5xl p-4 h-full flex-col">
+    <div className="max-w-5xl p-4 h-screen flex-col">
       <h1 className="text-2xl font-semibold text-center mb-6">Feeds</h1>
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {feeds.map((feed) => (

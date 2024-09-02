@@ -41,7 +41,6 @@ export default function FileUpload() {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            console.log(response.data);
         } catch (error) {
             console.error("Error during feed creation:", error);
         } finally {
@@ -50,7 +49,7 @@ export default function FileUpload() {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10">
+        <div className="max-w-md mx-auto mt-10 h-screen">
             {file && <p>Selected image: {file.name}</p>}
             {videofile && <p>Selected video: {videofile.name}</p>}
             <h1 className="text-2xl font-bold mb-4">Upload Feed</h1>

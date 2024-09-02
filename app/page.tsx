@@ -25,10 +25,10 @@ export default function Home() {
   }
   return (
     <main className="flex min-h-screen flex-col items-center p-24 bg-gradient-to-r from-pink-100 via-pink-50 to-blue-100">
-      <h1 className="text-slate-400 font-bold bg-clip-text text-6vh mb-4">
+      <h1 className="text-slate-400 font-bold bg-clip-text text-5xl mb-4">
         Share Your Code, Learn Together
       </h1>
-      <p className="text-black bg-clip-text text-4xl mb-10">
+      <p className="text-black bg-clip-text text-2xl mb-10">
         where developers learn and grow
       </p>
       <div className="flex flex-row"><Navbar /></div>
