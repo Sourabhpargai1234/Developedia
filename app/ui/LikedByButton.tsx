@@ -67,7 +67,8 @@ const LikedByButton: React.FC<LikedByButtonProps> = ({ id }) => {
             />
           )}
         </div>
-      )}
+      )
+    }
 
       {error && <p className="text-red-500">{error}</p>}
     </div>

@@ -63,8 +63,12 @@ body {
   align-items: center;
   font-weight: bold;
   height: 100vh;
-  font-size: 8vw;
+  font-size: 5vw;
   overflow: hidden;
+}
+
+.letter{
+  font-size: 6vh;
 }
 
 
