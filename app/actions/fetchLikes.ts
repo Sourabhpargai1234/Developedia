@@ -10,7 +10,7 @@ import { Like } from "@/models/Likes";
       await connectDB();  // Ensure the database connection is established
   
       // Query to find the document where the 'liked' field matches the given ID
-      const feed = await Like.find({ liked: id }).lean(); // Use .lean() to get a plain JavaScript object
+      const feed = await Like.find({feed: id}).populate('user', 'username profilePicture').lean(); // Use .lean() to get a plain JavaScript object
   
       console.log("Feed found =", feed);
       return feed || null;

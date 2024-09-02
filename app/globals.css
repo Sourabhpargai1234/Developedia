@@ -61,9 +61,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 4rem;
   font-weight: bold;
   height: 100vh;
+  font-size: 4vw;
   overflow: hidden;
 }
 

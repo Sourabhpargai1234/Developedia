@@ -21,7 +21,7 @@ const FeedsPage = async () => {
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {feeds.map((feed) => (
           <li key={feed._id.toString()} className="bg-white rounded-lg shadow-md flex flex-col justify-between">
-            <div className="aspect-w-4 aspect-h-3/5 ">
+            <div className="aspect-w-4 aspect-h-3/5">
               <img
                 src={feed.file}
                 alt={feed.content}
@@ -31,7 +31,7 @@ const FeedsPage = async () => {
             <div className="p-4">
               <h2 className="text-lg font-medium">{feed.content}</h2>
               <h2 className="text-gray-600">{feed.desc}</h2>
-              <Link href={`/dashboard/feeds/${feed._id.toString()}`}>
+              <Link href={`/dashboard/feeds/${feed.user.toString()}`}>
                   <p className="text-gray-600 cursor-pointer">Author: {feed?.user?.username}</p>
               </Link>
             </div>
@@ -40,10 +40,10 @@ const FeedsPage = async () => {
                 <ChatBubbleLeftIcon className="cursor-pointer hover:opacity-80"/>
                 <FollowButton id={feed._id.toString()} />
             </div>
-            <div className='flex my-4 mx-4'>
+            <div className='flex my-4 mx-4 w-full'>
               <LikedByButton id={feed._id.toString()}/>
-              {feed.createdAt.toLocaleString()}
             </div>
+            <div className='float-right w-full text-center'>{feed.createdAt.toLocaleString()}</div>
           </li>
         ))}
       </ul>

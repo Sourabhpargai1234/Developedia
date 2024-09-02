@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Loading: React.FC = () => {
-  const [loadingText, setLoadingText] = useState('Developedia');
+  const [loadingText, setLoadingText] = useState('Loading');
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const Loading: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <p className="text-xl font-semibold">{loadingText}</p>
+      <h1 className="text-2xl font-bold">{loadingText}</h1>
     </div>
   );
 };
