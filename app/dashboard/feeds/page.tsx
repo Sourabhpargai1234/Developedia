@@ -18,7 +18,7 @@ const FeedsPage = async () => {
   return (
     <div className="max-w-5xl p-4 h-full flex-col">
       <h1 className="text-2xl font-semibold text-center mb-6">Feeds</h1>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <ul className="grid w-full grid-cols-1 sm:grid-cols-2 gap-6">
         {feeds.map((feed) => (
           <li key={feed._id.toString()} className="bg-white rounded-lg shadow-md flex flex-col justify-between">
             <div className="aspect-w-4 aspect-h-3/5">
