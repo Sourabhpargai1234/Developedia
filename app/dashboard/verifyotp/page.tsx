@@ -6,11 +6,11 @@ import { useRouter } from 'next/navigation';
 
 async function getotp(email: string) {
   const verifyotp = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/send-otp`, { email });
-  console.log("verify otp=",verifyotp?.data?.otp)
+  console.log("verify otp=", verifyotp?.data?.otp);
   return verifyotp;
 }
 
-const verifyotp = () => {
+const VerifyOtp = () => {  // Renamed the component to start with an uppercase letter
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
@@ -22,9 +22,6 @@ const verifyotp = () => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [serverOtp, setServerOtp] = useState('');
   const [session, setSession] = useState('');
-  console.log("verify otp=", verifyotp)
-  console.log("Otp from the server=",serverOtp);
-  console.log("otp from user=",otp)
 
   useEffect(() => {
     const localStorageData = localStorage.getItem('formData');
@@ -68,7 +65,7 @@ const verifyotp = () => {
 
   const handleOtpSubmit = async () => {
     const enteredOtp = otp.join('');
-    if (enteredOtp == serverOtp) {
+    if (enteredOtp === serverOtp) {
       try {
         // Perform signup operation
         const signupResponse = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/signup`, formData, {
@@ -96,7 +93,7 @@ const verifyotp = () => {
   };
 
   return (
-<div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <h1 className="text-2xl font-bold mb-4">Verify OTP</h1>
       <p className="text-gray-700 mb-6">We have sent an OTP to your email: {formData.email}</p>
       <div className="flex space-x-2 mb-4">
@@ -120,6 +117,6 @@ const verifyotp = () => {
       </button>
     </div>
   );
-}
+};
 
-export default verifyotp;
+export default VerifyOtp;  // Ensure the export matches the new component name
