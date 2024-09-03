@@ -57,7 +57,6 @@ export async function POST(request: Request) {
       const arrayBuffer = await pic.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
       uploadedImageUrl = await uploadToCloudinary(buffer, "image");
-      console.log("ImageURL", uploadedImageUrl);
     }
 
     const user = new User({

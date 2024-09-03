@@ -7,11 +7,7 @@ type AdBannerTypes={
     dataFullWidthResponsive: boolean
 }
 
-const AdBanner=({
-    dataAdSlot,
-    dataAdFormat,
-    dataFullWidthResponsive
-}:AdBannerTypes)=>{
+const AdBanner=(props:AdBannerTypes)=>{
     useEffect(()=>{
         try {
             ((window as any).adsbygoogle=(window as any).adsbygoogle || []).push({})
@@ -21,13 +17,14 @@ const AdBanner=({
     })
     return(
         <ins
-          className="adsbygoogle bg-black"
-          style={{display: 'block'}}
-          data-ad-client="ca-pub-2736406526636598"
-          data-ad-slot={dataAdSlot}
-          data-ad-format={dataAdFormat}
-          data-full-width-responsive={dataFullWidthResponsive.toString()}
-        ></ins>
+        className="adsbygoogle adbanner-customize"
+        style={{
+          display: 'block',
+          overflow: 'hidden',
+        }}
+        data-ad-client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID}
+        {...props}
+      />
     )
 }
 export default AdBanner

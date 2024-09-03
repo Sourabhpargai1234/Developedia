@@ -7,7 +7,6 @@ export async function fetchFeed(id: string) {
   try {
     const db = await connectDB();
     const feeds = await Feed.find({user : id });
-    console.log(feeds)
     return feeds;
   } catch (error) {
     console.error("Error fetching feed:", error);

@@ -9,9 +9,6 @@ export interface ISubscribe extends Document {
   createdAt: Date;
 }
 
-// Interface for the Subscribe model
-export interface ISubscribeModel extends Model<ISubscribe> {}
-
 // Subscribe Schema
 const SubscribeSchema: Schema<ISubscribe> = new Schema({
   follower: { type: Schema.Types.ObjectId, ref: 'User', required: true },
@@ -20,4 +17,4 @@ const SubscribeSchema: Schema<ISubscribe> = new Schema({
 });
 
 // Create and export the Subscribe model
-export const Subscribe: ISubscribeModel = mongoose.model<ISubscribe, ISubscribeModel>('Subscribe', SubscribeSchema);
+export const Subscribe =  mongoose.models.Subscribe || mongoose.model<ISubscribe>('Subscribe', SubscribeSchema);
