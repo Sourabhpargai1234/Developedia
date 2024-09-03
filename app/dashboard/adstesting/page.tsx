@@ -1,5 +1,5 @@
 import React from 'react'
-import AdBanner from '@/app/ui/ads/AdBanner'
+import AdBanner from '@/app/ui/ads/AdUnit'
 
 export default function page() {
   return (

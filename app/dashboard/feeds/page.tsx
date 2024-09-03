@@ -3,9 +3,9 @@ import {ChatBubbleLeftIcon} from '@heroicons/react/24/outline'
 import FollowButton from '@/app/ui/FollowButton'; 
 import LikeButton from '@/app/ui/LikeButton';
 import LikedByButton from '@/app/ui/LikedByButton';
-import AdBanner from '@/app/ui/ads/AdBanner';
 import Link from 'next/link';
 import { Feed } from '@/models/Feed';
+import AdUnit from '@/app/ui/ads/AdUnit';
 
 const FeedsPage = async () => {
   const db = await connectDB();
@@ -48,7 +48,7 @@ const FeedsPage = async () => {
         ))}
       </ul>
       <div className='mt-8'>
-        <AdBanner dataAdFormat='auto' dataFullWidthResponsive={true} dataAdSlot='1573170883'/>
+        <AdUnit />
       </div>
     </div>
   );
