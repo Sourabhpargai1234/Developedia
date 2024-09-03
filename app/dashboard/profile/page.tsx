@@ -6,7 +6,6 @@ import { useRef } from "react";
 import { applyHoverScale, revertScale } from "@/app/ui/gsap/SizeAnimations";
 import { fetchFeed } from "@/app/actions/fetchFeed";
 import DashboardSkeleton from "@/app/ui/skeletons";
-import AdBanner from "@/app/ui/ads/AdUnit";
 
 export default function Home() {
   const linkRef1 = useRef<HTMLAnchorElement | null>(null);
@@ -94,9 +93,6 @@ export default function Home() {
           </li>
         ))}
       </ul>
-      <div className="absolute lg:top-1/4 lg:w-1/4 lg:right-0">
-        <AdBanner dataAdFormat='auto' dataFullWidthResponsive={true} dataAdSlot='1573170883'/>
-      </div>
     </div>
     </main>
   );
