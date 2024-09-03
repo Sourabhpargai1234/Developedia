@@ -47,7 +47,20 @@ const Signup = () => {
         formData.append("pic", pic);
       }
 
-      const signupResponse = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/signup`, formData, {
+      //const verifyotp = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/send-otp`, {email});
+      
+      const obj:any={};
+      formData.forEach((value, key)=>{
+        obj[key]=value;
+      })
+      localStorage.setItem('formData', JSON.stringify(obj));
+      setTimeout(() => {
+        localStorage.removeItem('formData');
+      }, 10000);
+
+        router.push("/dashboard/verifyotp")
+        
+      /*const signupResponse = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/signup`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           'Authorization': `Bearer ${session}`,
@@ -60,7 +73,7 @@ const Signup = () => {
         redirect: false,
       });
 
-      if (res?.ok) return router.push("/");
+      if (res?.ok) return router.push("/dashboard/profile");*/
     } catch (error) {
       console.log(error);
       if (error instanceof AxiosError) {
