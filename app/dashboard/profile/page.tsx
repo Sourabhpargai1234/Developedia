@@ -5,25 +5,22 @@ import axios from 'axios';
 import { useSession, signIn } from 'next-auth/react';
 
 const OtpInput: React.FC = () => {
-    const { data: session } = useSession(); // Access the session object
-    const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']); // Array to handle each input field
-    const inputRefs = useRef<(HTMLInputElement | null)[]>([]); // Refs for OTP input fields
-    const router = useRouter(); // Initialize the router for navigation
+    const { data: session } = useSession();
+    const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']); 
+    const inputRefs = useRef<(HTMLInputElement | null)[]>([]); 
+    const router = useRouter();
 
     const handleSubmit = async () => {
-        // Combine the OTP array into a single string
         const userEnteredOtp = otp.join('');
         try {
-            // Retrieve the formData from localStorage
             const storedData = localStorage.getItem("formData");
             if (!storedData) {
                 throw new Error("No form data found in localStorage.");
             }
 
-            // Parse the stored data
             const { value: formDataObject, expiration } = JSON.parse(storedData);
 
-            // Check if the stored data has expired
+
             if (new Date().getTime() > expiration) {
                 throw new Error("Stored form data has expired.");
             }
