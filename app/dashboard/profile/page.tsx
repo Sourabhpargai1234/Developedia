@@ -1,99 +1,115 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { useRef } from "react";
-import { applyHoverScale, revertScale } from "@/app/ui/gsap/SizeAnimations";
-import { fetchFeed } from "@/app/actions/fetchFeed";
-import DashboardSkeleton from "@/app/ui/skeletons";
+import React, { useState, useRef, useEffect, ChangeEvent, KeyboardEvent } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { useSession, signIn } from 'next-auth/react';
 
-export default function Home() {
-  const linkRef1 = useRef<HTMLAnchorElement | null>(null);
+const OtpInput: React.FC = () => {
+    const { data: session } = useSession(); // Access the session object
+    const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']); // Array to handle each input field
+    const inputRefs = useRef<(HTMLInputElement | null)[]>([]); // Refs for OTP input fields
+    const router = useRouter(); // Initialize the router for navigation
 
-  const { status, data: session } = useSession();
-  console.log("Session=",session)
-  const [feeds, setFeed] = useState<any[]>([]); 
-  const [error, setError] = useState<string | null>(null);
-  console.log("id: ",session?.user?.id)
-  useEffect(() => {
-    const getFeeds = async () => {
-      if (session?.user?.id) {
+    const handleSubmit = async () => {
+        // Combine the OTP array into a single string
+        const userEnteredOtp = otp.join('');
         try {
-          const fetchedFeeds = await fetchFeed(session?.user?.id);
-          setFeed(fetchedFeeds);
-        } catch (error) {
-          setError("Failed to fetch feeds");
-        }
-      }
-    };
-    getFeeds();
-  }, [session]);
-  console.log("Feeds: ",feeds)
-  const showSession = () => {
-    if (status === "authenticated") {
-      return (
-        <div className="w-full">
-          <div className="float-left">
-            <h1 className="text-3xl">Welcome {session?.user?.username}</h1>
-            <h1>{session?.user?.email}</h1>
-            <h1>{session?.user?.bio || "No bio available"}</h1>
-          </div>
-          <img
-                src={session?.user?.image}
-                alt='Profile pic'
-                height={100}
-                width={100}
-                className="float-right rounded-full"
-              />
-        </div>
-      );
-    } else if (status === "loading") {
-      return (
-        <div>
-            <h1 className="text-2xl font-semibold text-center mb-6 mr-auto w-3/5">Your Uploads</h1>
-            <DashboardSkeleton />
-        </div>
-      );
-    } else {
-      return (
-        <Link
-          href="/ui/login"
-          ref={linkRef1}
-          className="font-bold text-2xl text-[#888] inline-block mt-7 ml-[-58px] md:ml-0 transition duration-150 ease hover:text-white flex justify-center items-center top-1/2 left-1/2 absolute hover:bg-green-400 transition-transform duration-300 ease-in-out transform hover:scale-200 hover:rounded-xl"
-          onMouseEnter={() => applyHoverScale(linkRef1.current)}
-          onMouseLeave={() => revertScale(linkRef1.current)}
-        >
-          Login here
-        </Link>
-      );
-    }
-  };
+            // Retrieve the formData from localStorage
+            const storedData = localStorage.getItem("formData");
+            if (!storedData) {
+                throw new Error("No form data found in localStorage.");
+            }
 
-  console.log("Feeds", feeds);
-  return (
-    <main className="flex flex-col h-screen sm:h-full w-full relative">
-      {showSession()}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <div className="max-w-5xl p-4">
-      <h1 className="text-2xl font-semibold text-center mb-6">{session?(feeds.length==0?"You haven't uploaded anything yet":"Your uploads"):""}</h1>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {feeds.map((feed:any) => (
-          <li key={feed._id} className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="aspect-w-4 aspect-h-4">
-              <img
-                src={feed.file}
-                alt={feed.content}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="p-4">
-              <h2 className="text-lg font-medium">{feed.content}</h2>
-              <p className="text-gray-600">{feed.desc}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-    </main>
-  );
-}
+            // Parse the stored data
+            const { value: formDataObject, expiration } = JSON.parse(storedData);
+
+            // Check if the stored data has expired
+            if (new Date().getTime() > expiration) {
+                throw new Error("Stored form data has expired.");
+            }
+
+            // Add the OTP to the formData object
+            formDataObject.otp = userEnteredOtp;
+
+            // Send a POST request with the OTP and other form data
+            const signupResponse = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/signup`, formDataObject, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    'Authorization': `Bearer ${session}`,
+                },
+            });
+            console.log("Data=", signupResponse.data);
+
+            // Sign in the user after successful OTP verification
+            const res = await signIn("credentials", {
+                email: signupResponse.data.email,
+                password: formDataObject.password, // Use the actual password you received
+                redirect: false,
+            });
+
+            // Navigate to the profile page if the login is successful
+            if (res?.ok) return router.push("/dashboard/profile");
+        } catch (error: any) {
+            console.log("Error:", error.message || error);
+        }
+    };
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
+        const value = e.target.value;
+        if (/^[0-9]$/.test(value) || value === '') {
+            const newOtp = [...otp];
+            newOtp[index] = value;
+            setOtp(newOtp);
+
+            // Automatically move focus to the next input field
+            if (value && index < otp.length - 1) {
+                inputRefs.current[index + 1]?.focus();
+            }
+        }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>, index: number) => {
+        if (e.key === 'Backspace' && otp[index] === '') {
+            if (index > 0) {
+                inputRefs.current[index - 1]?.focus();
+            }
+        }
+    };
+
+    const handlePaste = (e: ClipboardEvent) => {
+        const pastedData = e.clipboardData?.getData('text') || '';
+        if (/^\d{6}$/.test(pastedData)) { // Expecting a 6-digit OTP
+            const newOtp = pastedData.split('');
+            setOtp(newOtp);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('paste', handlePaste);
+        return () => {
+            window.removeEventListener('paste', handlePaste);
+        };
+    }, []);
+
+    return (
+        <div className="flex gap-2">
+            {otp.map((value, index) => (
+                <input
+                    key={index}
+                    ref={(el) => { inputRefs.current[index] = el; }} // Ensure the function returns void
+                    type="text"
+                    value={value}
+                    onChange={(e) => handleChange(e, index)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                    maxLength={1}
+                    className="w-12 h-12 text-center text-xl border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+                />
+            ))}
+            <button onClick={handleSubmit} className="cursor-pointer ml-4 px-4 py-2 bg-blue-500 text-white rounded">
+                Submit
+            </button>
+        </div>
+    );
+};
+
+export default OtpInput;
