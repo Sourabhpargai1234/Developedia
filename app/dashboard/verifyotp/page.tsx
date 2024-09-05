@@ -13,7 +13,6 @@ const OtpInput: React.FC = () => {
     const handleSubmit = async () => {
         // Combine the OTP array into a single string
         const userEnteredOtp = otp.join('');
-
         try {
             // Retrieve the formData from localStorage
             const storedData = localStorage.getItem("formData");
@@ -39,7 +38,7 @@ const OtpInput: React.FC = () => {
                     'Authorization': `Bearer ${session}`,
                 },
             });
-            console.log("Data=", signupResponse.data)
+            console.log("Data=", signupResponse.data);
 
             // Sign in the user after successful OTP verification
             const res = await signIn("credentials", {
@@ -97,7 +96,7 @@ const OtpInput: React.FC = () => {
             {otp.map((value, index) => (
                 <input
                     key={index}
-                    ref={(el: HTMLInputElement | null) => (inputRefs.current[index] = el)}
+                    ref={(el) => { inputRefs.current[index] = el; }} // Ensure the function returns void
                     type="text"
                     value={value}
                     onChange={(e) => handleChange(e, index)}
