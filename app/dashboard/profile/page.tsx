@@ -25,10 +25,8 @@ const OtpInput: React.FC = () => {
                 throw new Error("Stored form data has expired.");
             }
 
-            // Add the OTP to the formData object
             formDataObject.otp = userEnteredOtp;
 
-            // Send a POST request with the OTP and other form data
             const signupResponse = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/signup`, formDataObject, {
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -37,14 +35,14 @@ const OtpInput: React.FC = () => {
             });
             console.log("Data=", signupResponse.data);
 
-            // Sign in the user after successful OTP verification
+
             const res = await signIn("credentials", {
                 email: signupResponse.data.email,
                 password: formDataObject.password, // Use the actual password you received
                 redirect: false,
             });
 
-            // Navigate to the profile page if the login is successful
+
             if (res?.ok) return router.push("/dashboard/profile");
         } catch (error: any) {
             console.log("Error:", error.message || error);
@@ -58,7 +56,6 @@ const OtpInput: React.FC = () => {
             newOtp[index] = value;
             setOtp(newOtp);
 
-            // Automatically move focus to the next input field
             if (value && index < otp.length - 1) {
                 inputRefs.current[index + 1]?.focus();
             }
@@ -75,7 +72,7 @@ const OtpInput: React.FC = () => {
 
     const handlePaste = (e: ClipboardEvent) => {
         const pastedData = e.clipboardData?.getData('text') || '';
-        if (/^\d{6}$/.test(pastedData)) { // Expecting a 6-digit OTP
+        if (/^\d{6}$/.test(pastedData)) { 
             const newOtp = pastedData.split('');
             setOtp(newOtp);
         }
@@ -103,7 +100,7 @@ const OtpInput: React.FC = () => {
                 />
             ))}
             <button onClick={handleSubmit} className="cursor-pointer ml-4 px-4 py-2 bg-blue-500 text-white rounded">
-                Submit
+              Submit otp
             </button>
         </div>
     );
