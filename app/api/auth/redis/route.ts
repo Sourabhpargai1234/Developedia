@@ -22,12 +22,3 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'An unknown error occurred' }, { status: 500 });
     }
 }
-
-// If you still want to use a general handler for all methods:
-export async function handler(req: NextRequest) {
-    if (req.method === 'POST') {
-        return POST(req);
-    } else {
-        return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
-    }
-}
