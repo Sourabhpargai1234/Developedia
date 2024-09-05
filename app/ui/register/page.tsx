@@ -46,34 +46,28 @@ const Signup = () => {
       if (pic) {
         formData.append("pic", pic);
       }
-
-      //const verifyotp = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/send-otp`, {email});
-      
-      const obj:any={};
-      formData.forEach((value, key)=>{
-        obj[key]=value;
-      })
-      localStorage.setItem('formData', JSON.stringify(obj));
-      setTimeout(() => {
-        localStorage.removeItem('formData');
-      }, 10000);
-
-        router.push("/dashboard/verifyotp")
-        
-      /*const signupResponse = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/signup`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          'Authorization': `Bearer ${session}`,
-        },
+  
+      // Convert FormData to a plain object for storage
+      const formDataObject: { [key: string]: any } = {};
+      formData.forEach((value, key) => {
+        formDataObject[key] = value;
       });
-
-      const res = await signIn("credentials", {
-        email: signupResponse.data.email,
-        password: password,
-        redirect: false,
-      });
-
-      if (res?.ok) return router.push("/dashboard/profile");*/
+  
+      // Store the formData in localStorage with a 10-minute expiration
+      const expirationInMinutes = 1/60;
+      const expirationDate = new Date().getTime() + expirationInMinutes * 60 * 1000;
+      localStorage.setItem(
+        "formData",
+        JSON.stringify({ value: formDataObject, expiration: expirationDate })
+      );
+  
+      // Send OTP request
+      //const generateOtp=await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/send-otp`, { email });
+      //console.log(generateOtp.data.message);
+  
+      // Redirect to the OTP verification page
+      router.push("/dashboard/verifyotp");
+  
     } catch (error) {
       console.log(error);
       if (error instanceof AxiosError) {
