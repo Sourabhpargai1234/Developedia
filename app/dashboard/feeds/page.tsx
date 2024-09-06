@@ -21,7 +21,7 @@ const FeedsPage = async () => {
     <ul className="grid w-full grid-cols-1 sm:grid-cols-2 gap-6">
       {feeds.map((feed) => (
         <li key={feed._id.toString()} className="bg-white rounded-lg shadow-md flex flex-col justify-between w-full sm:w-auto">
-          <div className="h-full w-full">
+          <div className="h-[300px] w-full">
             <img
               src={feed.file}
               alt={feed.content}
