@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     const session = await getServerSession(authOptions);
     console.log(User);
     const formData = await request.formData();
-
+    console.log("formData at backend= ",formData);
     const user = formData.get("user") as string;
 
  
