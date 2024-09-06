@@ -67,6 +67,7 @@ export default function Home() {
       );
     }
   };
+  console.log("User", session);
   console.log("Feeds", feeds);
   return (
     <main className="flex flex-col h-full sm:h-full w-full relative">
