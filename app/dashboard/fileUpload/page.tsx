@@ -42,7 +42,7 @@ export default function FileUpload() {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            router.push('/feeds');
+            router.push('/dashboard/feeds');
         } catch (error) {
             console.error("Error during feed creation:", error);
         } finally {
