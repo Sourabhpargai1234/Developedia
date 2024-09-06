@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 import { uploadToCloudinary } from "../Cloudinary";
 import { v2 as cloudinary } from 'cloudinary';
+import redis from "@/libs/redis";
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -17,27 +18,34 @@ export async function POST(request: Request) {
     await connectDB();
 
     const formData = await request.formData();
-
+    console.log(formData)
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const bio = formData.get("bio") as string;
-    const pic = formData.get("pic") as File | null;
-
+    const pic = formData.get("profilePicture") as Blob | null;
+    const userOtp = formData.get("otp") as string;
+    console.log("Image in backend=", pic);
+    if(!email){
+      return NextResponse.json({error: "Email is required"},{status: 400});
+    }
     if (password.length < 6) {
       return NextResponse.json(
         { message: "Password must be at least 6 characters" },
         { status: 400 }
       );
     }
-
     const userFound = await User.findOne({ name });
-
     if (userFound) {
       return NextResponse.json(
         { message: "Username already exists" },
         { status: 409 }
       );
+    }
+    const redistOtp=await redis.get(email);
+
+    if(redistOtp!=userOtp){
+      return NextResponse.json({ error: "Otp mismatched" }, { status: 500 });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);

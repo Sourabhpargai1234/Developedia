@@ -9,8 +9,8 @@ import DashboardSkeleton from "@/app/ui/skeletons";
 
 export default function Home() {
   const linkRef1 = useRef<HTMLAnchorElement | null>(null);
-
   const { status, data: session } = useSession();
+  const imageUrl=session?.user?.image || '/noimage.png'
   console.log("Session=",session)
   const [feeds, setFeed] = useState<any[]>([]); 
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +28,6 @@ export default function Home() {
     };
     getFeeds();
   }, [session]);
-  console.log("Feeds: ",feeds)
   const showSession = () => {
     if (status === "authenticated") {
       return (
@@ -39,7 +38,7 @@ export default function Home() {
             <h1>{session?.user?.bio || "No bio available"}</h1>
           </div>
           <img
-                src={session?.user?.image}
+                src={imageUrl}
                 alt='Profile pic'
                 height={100}
                 width={100}
@@ -68,7 +67,6 @@ export default function Home() {
       );
     }
   };
-
   console.log("Feeds", feeds);
   return (
     <main className="flex flex-col h-screen sm:h-full w-full relative">

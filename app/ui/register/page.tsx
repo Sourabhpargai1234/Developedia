@@ -14,12 +14,11 @@ const Signup = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [bio, setBio] = useState<string>('');
-  const [pic, setPic] = useState<File | null>(null); // For handling the profile picture
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { data: session } = useSession();
-  console.log("Session=",session)
+  console.log("Session=", session)
   const labelStyles = "w-full text-sm text-black";
 
   useEffect(() => {
@@ -27,12 +26,6 @@ const Signup = () => {
       router.push("/");
     }
   }, [session, router]);
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setPic(event.target.files[0]);
-    }
-  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -43,31 +36,31 @@ const Signup = () => {
       formData.append("email", email);
       formData.append("password", password);
       formData.append("bio", bio);
-      if (pic) {
-        formData.append("pic", pic);
-      }
-  
+
+      console.log("formData", formData)
+
       // Convert FormData to a plain object for storage
       const formDataObject: { [key: string]: any } = {};
       formData.forEach((value, key) => {
         formDataObject[key] = value;
       });
-  
+
+
       // Store the formData in localStorage with a 10-minute expiration
-      const expirationInMinutes = 1/60;
+      const expirationInMinutes = 5;
       const expirationDate = new Date().getTime() + expirationInMinutes * 60 * 1000;
       localStorage.setItem(
         "formData",
         JSON.stringify({ value: formDataObject, expiration: expirationDate })
       );
-  
+
       // Send OTP request
-      //const generateOtp=await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/send-otp`, { email });
-      //console.log(generateOtp.data.message);
-  
+      const generateOtp = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/send-otp`, { email });
+      console.log(generateOtp.data.message);
+
       // Redirect to the OTP verification page
       router.push("/dashboard/verifyotp");
-  
+
     } catch (error) {
       console.log(error);
       if (error instanceof AxiosError) {
@@ -76,6 +69,7 @@ const Signup = () => {
       }
     }
   };
+
 
   return (
     <section className="w-full h-screen flex items-center justify-center bg-gradient-to-r from-pink-100 via-pink-50 to-blue-100">
@@ -137,16 +131,6 @@ const Signup = () => {
           placeholder="Not compulsory"
           className="w-full h-8 border border-solid border-[#242424] py-1 px-2.5 rounded bg-white text-[13px]"
           name="bio"
-        />
- 
-        <label className={labelStyles}>Profile Pic:</label>
-        <input
-          type="file"
-          accept="image/jpeg,image/png,image/gif"
-          onChange={handleFileChange}
-          placeholder="Not compulsory"
-          className="w-full h-8 border border-solid border-[#242424] py-1 px-2.5 rounded bg-white text-[13px]"
-          name="pic"
         />
 
         <button className="w-full bg-black border border-solid border-[#242424] py-1.5 mt-2.5 rounded
