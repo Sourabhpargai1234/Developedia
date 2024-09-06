@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
+    <div className="flex h-screen flex-col md:flex-row md:overflow-hidden m-0 p-0 border-box">
       {/* Sidebar */}
       <div className="w-full flex-none md:w-64 md:fixed md:left-0 md:top-0 md:h-screen md:overflow-hidden bg-gray-200 shadow-lg">
         <SideNav />

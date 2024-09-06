@@ -69,7 +69,7 @@ export default function Home() {
   };
   console.log("Feeds", feeds);
   return (
-    <main className="flex flex-col h-screen sm:h-full w-full relative">
+    <main className="flex flex-col h-full sm:h-full w-full relative">
       {showSession()}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <div className="max-w-5xl p-4">

@@ -2,10 +2,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 export default function FileUpload() {
     const { data: session } = useSession();
-    
+    const router = useRouter();
     const [file, setFile] = useState<File | null>(null);
     const [videofile, setVideoFile] = useState<File | null>(null);
     const [email, setEmail] = useState("");
@@ -41,6 +42,7 @@ export default function FileUpload() {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            router.push('/feeds');
         } catch (error) {
             console.error("Error during feed creation:", error);
         } finally {
