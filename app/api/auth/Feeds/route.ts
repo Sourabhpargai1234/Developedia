@@ -7,6 +7,7 @@ import { connectDB } from "@/libs/mongodb";
 import { revalidatePath } from "next/cache";
 import { uploadToCloudinary } from "../Cloudinary";
 import { v2 as cloudinary } from 'cloudinary';
+import { User } from "@/models/User";
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -19,7 +20,7 @@ export async function POST(request: Request) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
-
+    console.log(User);
     const formData = await request.formData();
 
     const user = formData.get("user") as string;

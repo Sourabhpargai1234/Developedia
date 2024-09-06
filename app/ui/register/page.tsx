@@ -59,7 +59,7 @@ const Signup = () => {
       console.log(generateOtp.data.message);
 
       // Redirect to the OTP verification page
-      router.push("/ui/verifyotp");
+      router.push("/verifyop");
 
     } catch (error) {
       console.log(error);
