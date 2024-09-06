@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     const otp = Math.floor(100000 + Math.random() * 900000);
     otpStorage[email] = otp;
     const client = new SMTPClient({
-        user: 'Sourabhpargai1234@gmail.com',
+        user: `${process.env.USER_EMAIL}`,
         password: `${process.env.SMTP_PASSWORD}`,
         host: 'smtp.gmail.com',
         ssl: true,
@@ -28,14 +28,14 @@ export async function POST(request: Request) {
             text: `Your otp: ${otp}`,
             from: 'Developedia',
             to: `${email}`,
-            subject: 'testing emailjs',
+            subject: 'Requested otp',
         },
         (err, message) => {
             console.log(err || message);
         }
     );
 
-    return NextResponse.json({ message: "Otp created successfully" }, { status: 200 });
+    return NextResponse.json({ message: "Otp created successfully=", otp }, { status: 200 });
   } catch (error) {
     console.error('Error sending OTP:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
