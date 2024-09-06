@@ -40,7 +40,7 @@ const OtpInput: React.FC = () => {
             formData.append("otp", userEnteredOtp);
 
             // Send a POST request with the OTP and other form data
-            const signupResponse = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/signup`, formData, {
+            const signupResponse = await axios.post(`/api/auth/signup`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     'Authorization': `Bearer ${session}`,
