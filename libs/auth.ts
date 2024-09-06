@@ -76,7 +76,7 @@ export const authOptions: NextAuthOptions = {
     
         if (!existingUser) {
           // Insert the user details into the database if the user does not exist
-          await usersCollection.insertOne({
+          const insertResult=await usersCollection.insertOne({
             username: user.name,
             email: user.email,  // Correct email field
             password: "",       // Password is empty as it's a Google signup
@@ -87,6 +87,12 @@ export const authOptions: NextAuthOptions = {
             subscribedTo: new Array(),
             createdAt: new Date(),
           });
+        }
+
+        if (existingUser && existingUser._id) {
+          user.id = existingUser._id.toString();
+        } else {
+          throw new Error("Failed to retrieve MongoDB _id for the user");
         }
     
         return true; // Continue the sign-in process
