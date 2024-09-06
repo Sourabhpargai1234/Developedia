@@ -55,7 +55,7 @@ const Signup = () => {
       );
 
       // Send OTP request
-      const generateOtp = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/send-otp`, { email });
+      const generateOtp = await axios.post(`/api/auth/send-otp`, { email });
       console.log(generateOtp.data.message);
 
       // Redirect to the OTP verification page
