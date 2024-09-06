@@ -77,12 +77,12 @@ export default function Home() {
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {feeds.map((feed:any) => (
           <li key={feed._id} className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="aspect-w-4 aspect-h-4">
+            <div className="h-[300px] w-full">
               <img
-                src={feed.file}
-                alt={feed.content}
-                className="w-full h-full object-cover"
-              />
+                  src={feed.file}
+                  alt={feed.content}
+                  className="w-full h-full object-cover"
+                />
             </div>
             <div className="p-4">
               <h2 className="text-lg font-medium">{feed.content}</h2>

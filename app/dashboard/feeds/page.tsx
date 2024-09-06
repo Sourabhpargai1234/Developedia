@@ -6,6 +6,7 @@ import LikedByButton from '@/app/ui/LikedByButton';
 import Link from 'next/link';
 import { Feed } from '@/models/Feed';
 import AdUnit from '@/app/ui/ads/AdUnit';
+import { User } from '@/models/User';
 
 const FeedsPage = async () => {
   const db = await connectDB();
@@ -14,6 +15,7 @@ const FeedsPage = async () => {
   .sort({ createdAt: -1 }); // Sort by creation date, newest first
 
   console.log(feeds)
+  console.log(User)
 
   return (
   <div className="max-w-5xl p-4 h-full flex-col">
