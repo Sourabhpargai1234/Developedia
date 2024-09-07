@@ -9,11 +9,11 @@ interface LikeButtonProps {
 }
 
 const LikeButton: React.FC<LikeButtonProps> = ({ id }) => {
-  console.log("Button clicked");
   const { data: session } = useSession();
 
   const handleLike = async () => {
     try {
+      console.log("Button clicked");
       const likedBy = session?.user?.id;
       console.log("User=",likedBy)
       const liked = id;
