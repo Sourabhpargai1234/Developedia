@@ -15,15 +15,6 @@ interface User {
   email: string;
 }
 
-interface Feed {
-  _id: string;
-  content: string;
-  desc: string;  // Ensure this is defined in the schema
-  file: string;  // Ensure this is defined in the schema
-  createdAt: string | Date;
-  user: User;
-}
-
 async function getUserProfile(user: string) {
   console.log(User)
   const userProfile = await FeedModel.find({ user: user })

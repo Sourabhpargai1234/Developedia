@@ -7,13 +7,17 @@ import Link from 'next/link';
 import { Feed } from '@/models/Feed';
 import AdUnit from '@/app/ui/ads/AdUnit';
 import { User } from '@/models/User';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/libs/auth';
 
 const FeedsPage = async () => {
   const db = await connectDB();
+  const session = await getServerSession(authOptions);
   const feeds = await Feed.find()
   .populate('user', 'username')
   .sort({ createdAt: -1 }); // Sort by creation date, newest first
 
+  const filteredFeeds = feeds.filter(feed => feed?.user?.username !== session?.user?.username);
   console.log(feeds)
   console.log(User)
 
@@ -21,7 +25,7 @@ const FeedsPage = async () => {
   <div className="max-w-5xl h-full flex-col">
     <h1 className="text-2xl font-semibold text-center mb-6">Feeds</h1>
     <ul className="grid w-full grid-cols-1 sm:grid-cols-2 gap-6">
-      {feeds.map((feed) => (
+      {filteredFeeds.map((feed) => (
         <li key={feed._id.toString()} className="bg-white rounded-lg shadow-md flex flex-col justify-between w-full sm:w-auto">
           <div className="h-[300px] w-full">
             <img
