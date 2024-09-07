@@ -60,7 +60,7 @@ export async function POST(request: Request) {
         { status: 201 }
       );
     }
-  } catch (error) {
+  } catch (error: any) {
     // Step 6: Log any errors that occur during execution
     console.error("Error in like handling:", error);
     return NextResponse.json(
