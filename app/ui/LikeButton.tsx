@@ -9,6 +9,7 @@ interface LikeButtonProps {
 }
 
 const LikeButton: React.FC<LikeButtonProps> = ({ id }) => {
+  console.log("Button clicked");
   const { data: session } = useSession();
 
   const handleLike = async () => {
@@ -30,7 +31,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ id }) => {
       console.log(formData);
       const response = await axios.post("/api/auth/Likes", formData, {
         headers: {
-          'Authorization': `Bearer ${session || ''}`, // Use an appropriate token if needed
+          'Authorization': `Bearer ${session}`, // Use an appropriate token if needed
           'Content-Type': 'multipart/form-data',
         },
       });
