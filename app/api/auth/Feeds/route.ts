@@ -8,6 +8,7 @@ import { revalidatePath } from "next/cache";
 import { uploadToCloudinary } from "../Cloudinary";
 import { v2 as cloudinary } from 'cloudinary';
 import { User } from "@/models/User";
+export const revalidate = true;
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
