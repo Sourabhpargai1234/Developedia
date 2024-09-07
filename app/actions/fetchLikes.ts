@@ -1,7 +1,7 @@
 "use server";
 
 import { connectDB } from "@/libs/mongodb";
-import { Like } from "@/models/Likes";
+import { Like } from "@/models/Like";
 import { User } from "@/models/User";
   
 

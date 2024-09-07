@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { Like } from "@/models/Likes";
+import { Like } from "@/models/Like";
 import { NextResponse } from "next/server";
 import { authOptions } from "@/libs/auth";
 
@@ -12,6 +12,7 @@ export async function POST(request: Request) {
   }
 
   const formData = await request.formData();
+  console.log("formData at backend", formData)
   const liked = formData.get("liked") as string;
   const likedBy = formData.get("likedBy") as string;
 
