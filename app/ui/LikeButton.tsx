@@ -25,19 +25,18 @@ const LikeButton: React.FC<LikeButtonProps> = ({ id }) => {
         return;
       }
 
-      //const formData = new FormData();
-      //formData.append("liked", liked);
-      //formData.append("likedBy", likedBy);
-      //console.log(formData);
-
-      const data = { liked: liked, likedBy: likedBy };
-      const response = await fetch('/api/auth/Likes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+      const formData = new FormData();
+      formData.append("liked", liked);
+      formData.append("likedBy", likedBy);
+      console.log(formData);
+      const response = await axios.post("/api/auth/Likes", formData, {
+        headers: {
+          'Authorization': `Bearer ${session}`, // Use an appropriate token if needed
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
-      console.log(response); // Adjust the log to show response data
+      console.log(response.data); // Adjust the log to show response data
     } catch (error) {
       console.error("Error liking the post:", error);
     }
