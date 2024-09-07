@@ -11,18 +11,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const formData = await request.formData();
-  console.log("formData at backend", formData)
-  const liked = formData.get("liked") as string;
-  const likedBy = formData.get("likedBy") as string;
-
-
-  // Validate that the necessary data is provided
-  if (!liked || !likedBy) {
-    return NextResponse.json({ message: "Invalid data" }, { status: 400 });
-  }
-
   try {
+    const body = await request.json(); // Use `json()` to parse request body
+    const liked = body.liked;
+    const likedBy = body.likedBy;
+
+    // Validate that the necessary data is provided
+    if (!liked || !likedBy) {
+      return NextResponse.json({ message: "Invalid data" }, { status: 400 });
+    }
+
     const existingLike = await Like.findOne({ feed: liked, user: likedBy });
     if (existingLike) {
       await Like.deleteOne({ _id: existingLike._id });
@@ -30,9 +28,7 @@ export async function POST(request: Request) {
         { message: "Like deleted successfully" },
         { status: 200 }
       );
-    } 
-
-    else{
+    } else {
       const Likes = new Like({
         feed: liked,
         user: likedBy,
