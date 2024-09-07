@@ -13,7 +13,7 @@ interface User {
 }
 
 const LikedByButton: React.FC<LikedByButtonProps> = ({ id }) => {
-  const [likedBy, setLikedBy] = useState<User | null>(null);
+  const [likedBy, setLikedBy] = useState<User[]>([]); // Set likedBy to an array of users
   const [error, setError] = useState<string | null>(null);
 
   const handleLikedBy = async (e: React.MouseEvent<HTMLSpanElement>) => {
@@ -24,22 +24,19 @@ const LikedByButton: React.FC<LikedByButtonProps> = ({ id }) => {
       const databaseObject = await fetchLikes(id);
       console.log("Object=", databaseObject);
 
-      // Assuming the fetched data is an array and you want the first object
+      // Check if data exists and set likedBy to an array of users
       if (databaseObject && databaseObject.length > 0) {
-        const user = databaseObject[0]?.user;
+        const users = databaseObject.map((item: any) => ({
+          _id: item?.user?._id,
+          username: item?.user?.username,
+          profilePicture: item?.user?.profilePicture,
+        }));
 
-        if (user) {
-          setLikedBy({
-            _id: user._id,
-            username: user.username,
-            profilePicture: user.profilePicture,
-          });
-          console.log("Liked by field =", user);
-        } else {
-          console.log("No user field found in the object");
-        }
+        setLikedBy(users); // Update the state with the array of users
+        console.log("Liked by users =", users);
       } else {
         console.log("No data found");
+        setLikedBy([]); // Clear the likedBy array if no data is found
       }
     } catch (error) {
       console.error("Error fetching likes:", error);
@@ -56,19 +53,26 @@ const LikedByButton: React.FC<LikedByButtonProps> = ({ id }) => {
         Liked by
       </span>
 
-      {likedBy && (
-        <div className="w-full flex bg-blue-500 justify-between items-center">
-          <p className="float-left">{likedBy.username}</p>
-          {likedBy.profilePicture && (
-            <img
-              src={likedBy.profilePicture}
-              alt={`${likedBy.username}'s profile`}
-              className="w-10 h-10 rounded-full float-right"
-            />
-          )}
+      {/* Render the list of users who liked */}
+      {likedBy.length > 0 && (
+        <div className="w-full flex flex-col bg-blue-500 justify-between items-center">
+          {likedBy.map((user) => (
+            <div
+              key={user._id}
+              className="w-full flex justify-between items-center mb-2 p-2 bg-blue-600 rounded"
+            >
+              <p className="float-left">{user.username}</p>
+              {user.profilePicture && (
+                <img
+                  src={user.profilePicture}
+                  alt={`${user.username}'s profile`}
+                  className="w-10 h-10 rounded-full float-right"
+                />
+              )}
+            </div>
+          ))}
         </div>
-      )
-    }
+      )}
 
       {error && <p className="text-red-500">{error}</p>}
     </div>
