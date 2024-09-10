@@ -91,7 +91,7 @@ export default async function FeedPage({ params }: FeedPageProps) {
                 <h2 className="text-gray-600">{feed.desc}</h2>
               </div>
               <div className="flex h-8 gap-8 mx-4 justify-between">
-                <LikeButton id={feed._id.toString()} isLiked={"hi"}/>
+                <LikeButton id={feed._id.toString()} isLiked={true}/>
                 <ChatBubbleLeftIcon className="cursor-pointer hover:opacity-80" />
               </div>
               <div className="flex my-4 mx-4">
