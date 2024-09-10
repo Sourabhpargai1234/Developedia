@@ -47,7 +47,7 @@ const LikedByButton: React.FC<LikedByButtonProps> = ({ id }) => {
   return (
     <div className="w-3/4 flex items-center justify-center flex-col">
       <span
-        className="text-blue-400 px-4 py-4 cursor-pointer w-28 mr-auto"
+        className="text-white px-4 py-4 cursor-pointer w-28 mr-auto hover:text-black"
         onClick={handleLikedBy}
       >
         Liked by

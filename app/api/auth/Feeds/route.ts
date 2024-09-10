@@ -73,7 +73,6 @@ export async function POST(request: Request) {
       uploadedVideoUrl = await uploadToCloudinary(buffer, "video");
     }
 
-
     const feed = new Feed({
       user,
       content,

@@ -1,8 +1,8 @@
 "use server";
-
 import { connectDB } from "@/libs/mongodb";
 import { Like } from "@/models/Like";
 import { User } from "@/models/User";
+import { NextResponse } from "next/server";
   
 
   export async function fetchLikes(id: string): Promise<Record<string, any> | null> {
@@ -19,3 +19,18 @@ import { User } from "@/models/User";
       throw new Error("Failed to fetch likes");
     }
   }
+
+  export async function fetchLikesCount(feedId: string) {
+    const response = await fetch(`/api/likes?feedId=${feedId}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    });
+  
+    if (!response.ok) {
+      throw new Error('Failed to fetch likes');
+    }
+  
+    const data = await response.json();
+    return data.Likes;
+  }
+  

@@ -3,12 +3,15 @@
 import { HandThumbUpIcon } from '@heroicons/react/24/outline';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
+import { useState } from 'react';
 
 interface LikeButtonProps {
   id: string;
+  isLiked: boolean;
 }
 
-const LikeButton: React.FC<LikeButtonProps> = ({ id }) => {
+const LikeButton: React.FC<LikeButtonProps> = ({ id, isLiked: initialLikedState }) => {
+  const [liked, setLiked] = useState(initialLikedState);
   const { data: session } = useSession();
 
   const handleLike = async () => {
@@ -22,6 +25,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ id }) => {
       // Ensure both `liked` and `likedBy` are valid before proceeding
       if (!liked || !likedBy) {
         console.error("Missing data for like or likedBy");
+        setLiked(false);
         return;
       }
 
@@ -34,8 +38,10 @@ const LikeButton: React.FC<LikeButtonProps> = ({ id }) => {
           'Authorization': `Bearer ${session}`, // Use an appropriate token if needed
           'Content-Type': 'multipart/form-data',
         },
-      });
+      }); 
 
+      if(response?.data?.message=="Like deleted successfully") setLiked(false);
+      else setLiked(true);
       console.log(response.data); // Adjust the log to show response data
     } catch (error) {
       console.error("Error liking the post:", error);
@@ -44,10 +50,10 @@ const LikeButton: React.FC<LikeButtonProps> = ({ id }) => {
 
   return (
     <HandThumbUpIcon
-      className="cursor-pointer hover:opacity-80"
+      className={`cursor-pointer hover:opacity-80 ${liked ? 'text-blue-500' : 'text-gray-500'}`}
       onClick={handleLike}
+      fill={liked ? 'blue' : 'gray'} // Change the fill color based on the liked state
     />
-
   );
 };
 
