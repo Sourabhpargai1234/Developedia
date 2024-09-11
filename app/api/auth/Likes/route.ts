@@ -33,6 +33,11 @@ export async function POST(request: Request) {
     if (existingLike) {
       console.log("Like already exists, deleting it.");
       await Like.deleteOne({ _id: existingLike._id });
+
+      console.log("Revalidating path...");
+      revalidatePath('/dashboard/feeds', 'page');
+      console.log("Revalidation attempt done.");
+
       return NextResponse.json(
         { message: "Like deleted successfully" },
         { status: 200 }
@@ -44,11 +49,11 @@ export async function POST(request: Request) {
         user: likedBy,
       });
       const savedLike = await Likes.save();
-      console.log("New like saved:", savedLike);
-
+      
       console.log("Revalidating path...");
       revalidatePath('/dashboard/feeds', 'page');
       console.log("Revalidation attempt done.");
+      console.log("New like saved:", savedLike);
       
       return NextResponse.json(
         {
