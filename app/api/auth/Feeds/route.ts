@@ -83,7 +83,7 @@ export async function POST(request: Request) {
 
     const savedFeed = await feed.save();
 
-    revalidatePath('/dashboard/feeds')
+    revalidatePath('/dashboard/feeds', 'page')
 
     return NextResponse.json(
       {

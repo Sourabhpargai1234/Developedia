@@ -3,6 +3,8 @@ import { Like } from "@/models/Like";
 import { NextResponse } from "next/server";
 import { authOptions } from "@/libs/auth";
 import { connectDB } from "@/libs/mongodb";
+import { revalidatePath } from "next/cache";
+export const revalidate = true;
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
@@ -44,6 +46,7 @@ export async function POST(request: Request) {
       const savedLike = await Likes.save();
       console.log("New like saved:", savedLike);
 
+      revalidatePath('/dashboard/feeds', 'page')
       return NextResponse.json(
         {
           feed: savedLike.feed,
