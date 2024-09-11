@@ -46,7 +46,10 @@ export async function POST(request: Request) {
       const savedLike = await Likes.save();
       console.log("New like saved:", savedLike);
 
-      revalidatePath('/dashboard/feeds', 'page')
+      console.log("Revalidating path...");
+      revalidatePath('/dashboard/feeds', 'page');
+      console.log("Revalidation attempt done.");
+      
       return NextResponse.json(
         {
           feed: savedLike.feed,
