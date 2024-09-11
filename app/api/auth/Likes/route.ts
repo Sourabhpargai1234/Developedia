@@ -60,24 +60,3 @@ export async function POST(request: Request) {
     );
   }
 }
-
-export async function POST(request: Request){
-  /*const session = await getServerSession(authOptions);
-  console.log("Session: ", session);
-
-  if (!session) {
-    console.log("Unauthorized access attempt.");
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  }*/
-
-  try{
-    await connectDB();
-    const FeedId=await request.json();
-    console.log("FeedId=",FeedId);
-    const totalLikes=await Like.find({feed: FeedId}).countDocuments();
-    return NextResponse.json({ Likes: totalLikes }, { status: 200 });
-  }
-  catch(error:any){
-    return NextResponse.json({ Error: error.message }, { status: 400 });
-  }
-}
