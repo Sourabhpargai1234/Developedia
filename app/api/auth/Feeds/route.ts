@@ -1,5 +1,5 @@
 import { Feed, IFeed } from "@/models/Feed";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import mongoose from "mongoose";
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from "@/libs/auth";
@@ -17,7 +17,7 @@ cloudinary.config({
 });
 console.log("cloudinary", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME)
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -25,6 +25,7 @@ export async function POST(request: Request) {
     const formData = await request.formData();
     console.log("formData at backend= ",formData);
     const user = formData.get("user") as string;
+    const path = request.nextUrl.searchParams.get('path')
 
  
     const content = formData.get("content") as string;
@@ -84,7 +85,10 @@ export async function POST(request: Request) {
     const savedFeed = await feed.save();
 
     console.log("Revalidating path...");
-    revalidatePath('/dashboard/feeds', 'page');
+    if (path) {
+      revalidatePath(path)
+      return Response.json({ revalidated: true, now: Date.now() })
+    }
     console.log("Revalidation attempt done.");
     
 

@@ -1,12 +1,13 @@
 import { getServerSession } from "next-auth";
 import { Like } from "@/models/Like";
-import { NextResponse } from "next/server";
+import { NextResponse , NextRequest} from "next/server";
 import { authOptions } from "@/libs/auth";
 import { connectDB } from "@/libs/mongodb";
 import { revalidatePath } from "next/cache";
 export const revalidate = true;
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  const path = request.nextUrl.searchParams.get('path')
   const session = await getServerSession(authOptions);
   console.log("Session: ", session);
 
@@ -35,7 +36,10 @@ export async function POST(request: Request) {
       await Like.deleteOne({ _id: existingLike._id });
 
       console.log("Revalidating path...");
-      revalidatePath('/dashboard/feeds', 'page');
+      if (path) {
+        revalidatePath(path)
+        return Response.json({ revalidated: true, now: Date.now() })
+      }
       console.log("Revalidation attempt done.");
 
       return NextResponse.json(
@@ -51,7 +55,10 @@ export async function POST(request: Request) {
       const savedLike = await Likes.save();
       
       console.log("Revalidating path...");
-      revalidatePath('/dashboard/feeds', 'page');
+      if (path) {
+        revalidatePath(path)
+        return Response.json({ revalidated: true, now: Date.now() })
+      }
       console.log("Revalidation attempt done.");
       console.log("New like saved:", savedLike);
       
