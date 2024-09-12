@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 export const revalidate = true;
 
 export async function POST(request: NextRequest) {
-  const path = '/dashboard/feeds'
+  const path = 'https://developedia.vercel.app/dashboard/feeds'
   const session = await getServerSession(authOptions);
   console.log("Session: ", session);
 
