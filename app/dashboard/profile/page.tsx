@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRef } from "react";
 import { applyHoverScale, revertScale } from "@/app/ui/gsap/SizeAnimations";
-import { fetchFeed } from "@/app/actions/fetchFeed";
+import { fetchFeed } from "@/app/actions/fetchSessionFeeds";
 import DashboardSkeleton from "@/app/ui/skeletons";
 
 export default function Home() {

@@ -2,8 +2,8 @@
 
 import { HandThumbUpIcon } from '@heroicons/react/24/outline';
 import { useSession } from 'next-auth/react';
-import axios from 'axios';
 import { useState } from 'react';
+import { fetchLikeCount } from '../actions/fetchLikeCount';
 
 interface LikeButtonProps {
   id: string;
@@ -33,16 +33,11 @@ const LikeButton: React.FC<LikeButtonProps> = ({ id, isLiked: initialLikedState 
       formData.append("liked", liked);
       formData.append("likedBy", likedBy);
       console.log(formData);
-      const response = await axios.post("/api/auth/Likes", formData, {
-        headers: {
-          'Authorization': `Bearer ${session}`, // Use an appropriate token if needed
-          'Content-Type': 'multipart/form-data',
-        },
-      }); 
+      const response = await fetchLikeCount(formData)
 
-      if(response?.data?.message=="Like deleted successfully") setLiked(false);
+      if(response?.message=="Like deleted successfully") setLiked(false);
       else setLiked(true);
-      console.log(response.data); // Adjust the log to show response data
+      console.log(response); // Adjust the log to show response data
     } catch (error) {
       console.error("Error liking the post:", error);
     }
