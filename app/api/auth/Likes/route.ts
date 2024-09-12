@@ -7,9 +7,7 @@ import { revalidatePath } from "next/cache";
 export const revalidate = true;
 
 export async function POST(request: NextRequest) {
-  const path = 'https://developedia.vercel.app/dashboard/feeds'
   const session = await getServerSession(authOptions);
-  console.log("Session: ", session);
 
   if (!session) {
     console.log("Unauthorized access attempt.");
@@ -36,11 +34,7 @@ export async function POST(request: NextRequest) {
       await Like.deleteOne({ _id: existingLike._id });
 
       console.log("Revalidating path...");
-      console.log("path",path)
-      if (path) {
-        revalidatePath(path)
-        return Response.json({ revalidated: true, now: Date.now() })
-      }
+      revalidatePath('https://developedia.vercel.app/dashboard/feeds')
       console.log("Revalidation attempt done.");
 
       return NextResponse.json(
@@ -56,11 +50,7 @@ export async function POST(request: NextRequest) {
       const savedLike = await Likes.save();
       
       console.log("Revalidating path...");
-      console.log("path",path)
-      if (path) {
-        revalidatePath(path)
-        return Response.json({ revalidated: true, now: Date.now() })
-      }
+      revalidatePath('https://developedia.vercel.app/dashboard/feeds')
       console.log("Revalidation attempt done.");
       console.log("New like saved:", savedLike);
       
