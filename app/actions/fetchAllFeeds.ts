@@ -1,3 +1,5 @@
+"use server"
+
 import { Feed, IFeed } from "@/models/Feed";
 import mongoose from "mongoose";
 import { getServerSession } from 'next-auth/next';
