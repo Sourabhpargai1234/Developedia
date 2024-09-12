@@ -9,7 +9,6 @@ import { v2 as cloudinary } from 'cloudinary';
 import { User } from "@/models/User";
 import { useRouter } from "next/navigation";
 const path = '/dashboard/profile'
-const router = useRouter();
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -19,6 +18,7 @@ cloudinary.config({
 console.log("cloudinary", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME)
 
 export async function fetchAllFeeds(formData: FormData) {
+    const router = useRouter();
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
