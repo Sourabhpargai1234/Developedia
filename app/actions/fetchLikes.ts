@@ -2,7 +2,6 @@
 import { connectDB } from "@/libs/mongodb";
 import { Like } from "@/models/Like";
 import { User } from "@/models/User";
-import { NextResponse } from "next/server";
   
 
   export async function fetchLikes(id: string): Promise<Record<string, any> | null> {

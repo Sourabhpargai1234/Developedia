@@ -7,7 +7,9 @@ import { revalidatePath } from "next/cache";
 import { uploadToCloudinary } from "../api/auth/Cloudinary";
 import { v2 as cloudinary } from 'cloudinary';
 import { User } from "@/models/User";
-const path = '/dashboard/feeds'
+import { useRouter } from "next/navigation";
+const path = '/dashboard/profile'
+const router = useRouter();
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -85,7 +87,7 @@ export async function fetchAllFeeds(formData: FormData) {
     if (path) {
       revalidatePath(path)
     }
-    
+    router.push("/dashboard/profile");
 
     return (
       {
