@@ -19,6 +19,7 @@
     "clsx": "^2.1.1",
     "emailjs": "^4.0.3",
     "formidable": "^3.5.1",
+    "fs": "^0.0.1-security",
     "gsap": "^3.12.5",
     "ioredis": "^5.4.1",
     "moment": "^2.30.1",
