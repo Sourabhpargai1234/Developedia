@@ -7,7 +7,6 @@ import { revalidatePath } from "next/cache";
 import { uploadToCloudinary } from "../api/auth/Cloudinary";
 import { v2 as cloudinary } from 'cloudinary';
 import { User } from "@/models/User";
-import { useRouter } from "next/navigation";
 const path = '/dashboard/profile'
 
 cloudinary.config({
@@ -18,7 +17,6 @@ cloudinary.config({
 console.log("cloudinary", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME)
 
 export async function fetchAllFeeds(formData: FormData) {
-    const router = useRouter();
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -87,7 +85,6 @@ export async function fetchAllFeeds(formData: FormData) {
     if (path) {
       revalidatePath(path)
     }
-    router.push("/dashboard/profile");
 
     return (
       {

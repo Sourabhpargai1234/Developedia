@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import axios from 'axios';
+import { fetchAllFeeds } from '@/app/actions/fetchAllFeeds';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -36,14 +36,11 @@ export default function FileUpload() {
 
         formData.append("email", email);
         try {
-            const response = await axios.post("/api/auth/Feeds", formData, {
-                headers: {
-                    'Authorization': `Bearer ${session}`, // Adjust as needed
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            router.push('/dashboard/feeds');
-        } catch (error) {
+            const response = await fetchAllFeeds(formData)
+            router.push('/dashboard/profile');
+            console.log("response from server action=",response)
+        }
+        catch (error) {
             console.error("Error during feed creation:", error);
         } finally {
             setIsUploading(false);
