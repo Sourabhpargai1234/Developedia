@@ -20,17 +20,4 @@ import { NextResponse } from "next/server";
     }
   }
 
-  export async function fetchLikesCount(feedId: string) {
-    const response = await fetch(`/api/likes?feedId=${feedId}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    });
-  
-    if (!response.ok) {
-      throw new Error('Failed to fetch likes');
-    }
-  
-    const data = await response.json();
-    return data.Likes;
-  }
   

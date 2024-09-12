@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 export const revalidate = true;
 
 export async function POST(request: NextRequest) {
-  const path = request.nextUrl.searchParams.get('path')
+  const path = '/dashboard/feeds'
   const session = await getServerSession(authOptions);
   console.log("Session: ", session);
 
@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
       await Like.deleteOne({ _id: existingLike._id });
 
       console.log("Revalidating path...");
+      console.log("path",path)
       if (path) {
         revalidatePath(path)
         return Response.json({ revalidated: true, now: Date.now() })
@@ -55,6 +56,7 @@ export async function POST(request: NextRequest) {
       const savedLike = await Likes.save();
       
       console.log("Revalidating path...");
+      console.log("path",path)
       if (path) {
         revalidatePath(path)
         return Response.json({ revalidated: true, now: Date.now() })
