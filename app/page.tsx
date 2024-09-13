@@ -10,10 +10,11 @@ import HangingElements from "./ui/gsap/HangingElements";
 import HangingElements2 from "./ui/gsap/HangingElements2";
 import Loading from "./loading";
 import TextAnimation from "./ui/gsap/TextAnimation";
+import { useOnlineStatus } from "./ui/Status";
 
 
 export default function Home() {
-
+  const isOnline = useOnlineStatus();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,6 +26,11 @@ export default function Home() {
   }
   return (
     <main className="flex min-h-screen flex-col items-center p-24 bg-gradient-to-r from-pink-100 via-pink-50 to-blue-100">
+      {isOnline ? (
+        <h1></h1>
+      ) : (
+        <h1 style={{ color: 'red' }}>You are OFFLINE</h1>
+      )}
       <h1 className="text-slate-400 font-bold bg-clip-text text-5xl mb-4">
         Share Your Code, Learn Together
       </h1>

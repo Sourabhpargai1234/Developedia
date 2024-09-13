@@ -1,13 +1,22 @@
 "use server"
 
 import { Like } from "@/models/Like";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/libs/auth";
 import { revalidatePath } from "next/cache";
-const path = 'http://localhost:3000/dashboard/feeds'
+import { connectDB } from "@/libs/mongodb";
+const path = '/dashboard/feeds'
 
 export const fetchLikeCount = async(formData: FormData) => {
     console.log("Raw formData: ", formData);
     const liked = formData.get("liked");
     const likedBy = formData.get("likedBy");
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+        console.log("Unauthorized access attempt.");
+        return ({ message: "Unauthorized", status: 401});
+    }
 
     if (!liked || !likedBy) {
         console.log("Invalid data: liked or likedBy is missing.");
@@ -15,6 +24,7 @@ export const fetchLikeCount = async(formData: FormData) => {
     }
 
     try {
+        await connectDB();
         const existingLike = await Like.findOne({ feed: liked, user: likedBy });
         if (existingLike) {
           console.log("Like already exists, deleting it.");
