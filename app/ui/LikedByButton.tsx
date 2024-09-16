@@ -1,6 +1,7 @@
 "use client";
 import { fetchLikes } from "../actions/fetchLikes";
 import { useState } from "react";
+import Modal from "./Model";
 
 interface LikedByButtonProps {
   id: string;
@@ -15,9 +16,15 @@ interface User {
 const LikedByButton: React.FC<LikedByButtonProps> = ({ id }) => {
   const [likedBy, setLikedBy] = useState<User[]>([]); // Set likedBy to an array of users
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const handleLikedBy = async (e: React.MouseEvent<HTMLSpanElement>) => {
     e.preventDefault();
+    setIsModalOpen(true);
     console.log("Button clicked");
 
     try {
@@ -53,26 +60,28 @@ const LikedByButton: React.FC<LikedByButtonProps> = ({ id }) => {
         Liked by
       </span>
 
-      {/* Render the list of users who liked */}
-      {likedBy.length > 0 && (
-        <div className="w-full flex flex-col bg-blue-500 justify-between items-center">
-          {likedBy.map((user) => (
-            <div
-              key={user._id}
-              className="w-full flex justify-between items-center mb-2 p-2 bg-blue-600 rounded"
-            >
-              <p className="float-left">{user.username}</p>
-              {user.profilePicture && (
-                <img
-                  src={user.profilePicture}
-                  alt={`${user.username}'s profile`}
-                  className="w-10 h-10 rounded-full float-right"
-                />
+          <Modal isOpen={isModalOpen} onClose={closeModal}>
+              {/* Render the list of users who liked */}
+              {likedBy.length > 0 && (
+                <div className="w-full flex flex-col justify-between items-center">
+                  {likedBy.map((user) => (
+                    <div
+                      key={user._id}
+                      className="w-full flex justify-between items-center mb-2 p-2 bg-gray-500 rounded"
+                    >
+                      <p className="float-left">{user.username}</p>
+                      {user.profilePicture && (
+                        <img
+                          src={user.profilePicture}
+                          alt={`${user.username}'s profile`}
+                          className="w-10 h-10 rounded-full float-right"
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
               )}
-            </div>
-          ))}
-        </div>
-      )}
+          </Modal>
 
       {error && <p className="text-red-500">{error}</p>}
     </div>
