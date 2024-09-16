@@ -12,17 +12,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
   const[loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (isOpen) {
-      setLoading(true);
-      const timer = setTimeout(() => {
+  useEffect(()=>{
+    const timer=setTimeout(()=>{
         setLoading(false);
-      }, 1000);
-      return () => clearTimeout(timer); 
-    }
-  }, [isOpen]);
-
-  if (!isOpen) return null;
+    }, 1000)
+    return ()=>clearTimeout(timer);
+  },[])
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">

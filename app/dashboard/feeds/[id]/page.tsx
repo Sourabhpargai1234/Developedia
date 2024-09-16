@@ -88,9 +88,6 @@ export default async function FeedPage({ params }: FeedPageProps) {
               <div className="flex h-8 gap-8 mx-4 justify-between">
                 <LikeButton id={feed._id.toString()} isLiked={true}/>
                 <ChatBubbleLeftIcon className="cursor-pointer hover:opacity-80" />
-                <div className="flex items-center bg-green-400 rounded-lg hover:bg-green-200 hover:text-white">
-                  <LikedByButton id={feed._id.toString()} />
-                </div>
               </div>
               <div className="flex my-4 mx-4">
                 {new Date(feed.createdAt).toLocaleString()}
