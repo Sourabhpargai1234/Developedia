@@ -9,15 +9,18 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
-  if (!isOpen) return null;
   const[loading, setLoading] = useState(true);
-
-  useEffect(()=>{
-    const timer=setTimeout(()=>{
+  
+  useEffect(() => {
+    if (isOpen) {
+      setLoading(true);
+      const timer = setTimeout(() => {
         setLoading(false);
-    }, 1000)
-    return ()=>clearTimeout(timer);
-  },[])
+      }, 1000);
+      return () => clearTimeout(timer); 
+    }
+  }, [isOpen]);
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
