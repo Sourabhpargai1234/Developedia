@@ -38,13 +38,8 @@ interface FeedPageProps {
 export default async function FeedPage({ params }: FeedPageProps) {
   try {
     const db = await connectDB();
-
-    const decodedParam = decodeURIComponent(params.id);
-    const objectIdMatch = decodedParam.match(/ObjectId\('([a-fA-F0-9]{24})'\)/);
-    if (!objectIdMatch || objectIdMatch.length < 2) {
-      throw new Error('Invalid ObjectId format');
-    }
-    const objectId = objectIdMatch[1];
+    console.log(params)
+    const objectId = params.id;
     const feeds = await getUserProfile(objectId);
 
     if (!feeds || feeds.length === 0) {
@@ -79,7 +74,7 @@ export default async function FeedPage({ params }: FeedPageProps) {
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {feeds.map((feed) => (
             <li key={feed._id.toString()} className="bg-white rounded-lg shadow-md flex flex-col justify-between">
-              <div className="aspect-w-4 aspect-h-3/5">
+              <div className="h-[300px] w-full">
                 <img
                   src={feed.file}
                   alt={feed.content}
@@ -93,9 +88,11 @@ export default async function FeedPage({ params }: FeedPageProps) {
               <div className="flex h-8 gap-8 mx-4 justify-between">
                 <LikeButton id={feed._id.toString()} isLiked={true}/>
                 <ChatBubbleLeftIcon className="cursor-pointer hover:opacity-80" />
+                <div className="flex items-center bg-green-400 rounded-lg hover:bg-green-200 hover:text-white">
+                  <LikedByButton id={feed._id.toString()} />
+                </div>
               </div>
               <div className="flex my-4 mx-4">
-                <LikedByButton id={feed._id.toString()} />
                 {new Date(feed.createdAt).toLocaleString()}
               </div>
             </li>

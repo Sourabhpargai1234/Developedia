@@ -81,7 +81,7 @@ const LikedByButton: React.FC<LikedByButtonProps> = ({ id }) => {
                   ))}
                 </div>
               )}
-              {likedBy.length == 0 && <p className="text-red-500">{`No one liked this post`}</p>}
+              {likedBy.length == 0 && <p className="text-red-500 text-center">{`No one liked this post`}</p>}
           </Modal>
     </div>
   );
