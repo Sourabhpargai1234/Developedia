@@ -1,4 +1,5 @@
 "use client";
+
 import { fetchLikes } from "../actions/fetchLikes";
 import { useState } from "react";
 import Modal from "./Model";
