@@ -9,7 +9,7 @@ export default function Aboutpage() {
   return (
     <div className="w-full h-full p-8 bg-gray-100 text-gray-900">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-4">About Us</h1>
+        <h1 className="text-4xl font-bold mb-4">This is me</h1>
         <p className="text-lg mb-6">
           Welcome to <span className="font-semibold">Developedia</span>, the ultimate social platform built by developers, for developers!
         </p>
