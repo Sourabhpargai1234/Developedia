@@ -32,7 +32,7 @@ export default function Home() {
         <h1 style={{ color: 'red' }}>You are OFFLINE</h1>
       )}
       <h1 className="text-slate-400 font-bold bg-clip-text text-5xl mb-4">
-        Share Your Vote, Learn Together
+        Share Your Code, Learn Together
       </h1>
       <p className="text-black bg-clip-text text-2xl mb-10">
         where developers learn and grow
