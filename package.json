@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "HOST=0.0.0.0 PORT=3000 next dev",
+    "dev": "cross-env HOST=0.0.0.0 PORT=3000 next dev",
     "build": "next build",
-    "start": "next dev",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -41,6 +41,7 @@
     "@types/nodemailer": "^6.4.15",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "cross-env": "^7.0.3",
     "eslint": "^8",
     "eslint-config-next": "14.2.6",
     "postcss": "^8",
