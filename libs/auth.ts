@@ -87,6 +87,11 @@ export const authOptions: NextAuthOptions = {
             subscribedTo: new Array(),
             createdAt: new Date(),
           });
+          if (insertResult.insertedId) {
+            user.id = insertResult.insertedId.toString();
+          } else {
+            throw new Error("Failed to retrieve MongoDB _id for the inserted user");
+          }
         }
 
         if (existingUser && existingUser._id) {
