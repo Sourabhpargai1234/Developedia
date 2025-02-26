@@ -26,7 +26,7 @@ export default function NavLinks({ direction = "horizontal" }: { direction?: "ho
   return (
     <div className={clsx(
       {
-      "flex space-x-2": direction === "horizontal", // Horizontal layout
+      "flex space-x-2 h-[7vh]": direction === "horizontal", // Horizontal layout
       "flex flex-col space-y-2": direction === "vertical" // Vertical layout
     })}>
       {links.map((link) => {
