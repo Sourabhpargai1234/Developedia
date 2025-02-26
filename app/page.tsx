@@ -37,7 +37,7 @@ export default function Home() {
       <p className="text-black bg-clip-text text-2xl mb-10">
         where developers learn and grow
       </p>
-      <div className="flex flex-row"><Navbar /></div>
+      <div className="flex flex-row"><Navbar direction="horizontal" /></div>
       <div className="flex flex-row">
        <HangingElements />
         <Image 
