@@ -32,8 +32,8 @@ export default function SideNav() {
           ${isMobile ? "self-center" : "mt-3"}`}
           onClick={() => signOut()}
         >
-          <UserCircleIcon className="w-6" />
-          <span className="hidden md:inline">Sign Out</span>
+          <UserCircleIcon className="w-6 text-blue-600" />
+          <span className="hidden md:inline text-blue-600">Sign Out</span>
         </button>
       </div>
 
